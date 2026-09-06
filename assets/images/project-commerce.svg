@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0a101f"/>
+      <stop offset="100%" stop-color="#060913"/>
+    </linearGradient>
+    <linearGradient id="gradEmerald" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#10b981"/>
+      <stop offset="100%" stop-color="#06b6d4"/>
+    </linearGradient>
+    <linearGradient id="cardGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#192238"/>
+      <stop offset="100%" stop-color="#121829"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="800" height="500" fill="url(#bgGrad2)"/>
+
+  <!-- UI Window Container -->
+  <g transform="translate(80, 50)">
+    <!-- Main Window Background -->
+    <rect width="640" height="400" rx="20" fill="url(#cardGrad)" stroke="rgba(255,255,255,0.12)" stroke-width="1.5"/>
+    
+    <!-- Window Header -->
+    <rect width="640" height="48" rx="20" fill="#0e1424"/>
+    <rect y="30" width="640" height="18" fill="#0e1424"/>
+    <circle cx="28" cy="24" r="5" fill="#ef4444"/>
+    <circle cx="44" cy="24" r="5" fill="#f59e0b"/>
+    <circle cx="60" cy="24" r="5" fill="#10b981"/>
+    
+    <!-- Search Bar in Header -->
+    <rect x="180" y="10" width="280" height="28" rx="14" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.08)"/>
+    <text x="210" y="28" fill="#64748b" font-family="'JetBrains Mono', monospace" font-size="12">pulse://search?latency=42ms</text>
+
+    <!-- Content Columns -->
+    <!-- Left Sidebar -->
+    <rect x="24" y="68" width="140" height="308" rx="12" fill="rgba(255,255,255,0.02)"/>
+    <rect x="40" y="90" width="80" height="10" rx="5" fill="#3b82f6" opacity="0.6"/>
+    <rect x="40" y="115" width="100" height="8" rx="4" fill="#475569"/>
+    <rect x="40" y="135" width="90" height="8" rx="4" fill="#475569"/>
+    <rect x="40" y="155" width="70" height="8" rx="4" fill="#475569"/>
+
+    <!-- Right Product Grid -->
+    <g transform="translate(180, 68)">
+      <!-- Card 1 -->
+      <rect x="0" y="0" width="140" height="145" rx="12" fill="#161f36" stroke="rgba(255,255,255,0.06)"/>
+      <rect x="15" y="15" width="110" height="70" rx="8" fill="url(#gradEmerald)" opacity="0.4"/>
+      <rect x="15" y="95" width="80" height="8" rx="4" fill="#f8fafc"/>
+      <rect x="15" y="112" width="40" height="10" rx="5" fill="#10b981"/>
+
+      <!-- Card 2 -->
+      <rect x="155" y="0" width="140" height="145" rx="12" fill="#161f36" stroke="rgba(255,255,255,0.06)"/>
+      <rect x="170" y="15" width="110" height="70" rx="8" fill="#6366f1" opacity="0.3"/>
+      <rect x="170" y="95" width="75" height="8" rx="4" fill="#f8fafc"/>
+      <rect x="170" y="112" width="40" height="10" rx="5" fill="#10b981"/>
+
+      <!-- Card 3 -->
+      <rect x="310" y="0" width="130" height="145" rx="12" fill="#161f36" stroke="rgba(255,255,255,0.06)"/>
+      <rect x="325" y="15" width="100" height="70" rx="8" fill="#a855f7" opacity="0.3"/>
+      <rect x="325" y="95" width="60" height="8" rx="4" fill="#f8fafc"/>
+      <rect x="325" y="112" width="40" height="10" rx="5" fill="#10b981"/>
+
+      <!-- Performance Graph Bar -->
+      <g transform="translate(0, 165)">
+        <rect width="440" height="143" rx="12" fill="rgba(15, 23, 42, 0.6)" stroke="rgba(255,255,255,0.08)"/>
+        <text x="20" y="32" fill="#94a3b8" font-family="'Plus Jakarta Sans', sans-serif" font-size="13" font-weight="600">Checkout Throughput (req/sec)</text>
+        <path d="M 30,115 Q 120,60 200,85 T 320,50 T 410,35" fill="none" stroke="url(#gradEmerald)" stroke-width="3.5" stroke-linecap="round"/>
+        <circle cx="410" cy="35" r="5" fill="#10b981"/>
+        <text x="350" y="30" fill="#10b981" font-family="'JetBrains Mono', monospace" font-size="12" font-weight="bold">+28% CVR</text>
+      </g>
+    </g>
+  </g>
+</svg>
