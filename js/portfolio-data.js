@@ -22,7 +22,7 @@ const portfolioData = {
     location: "Bareilly, UP, India",
     timezone: "Asia/Kolkata (IST)",
     email: "adityarajraja01@gmail.com",
-    resumeUrl: "#",
+    resumeUrl: "assets/Aditaya_Raj_Resume.pdf",
     tagline: "Computer Science & Engineering scholar (CSE'28) architecting responsive full-stack web applications, clinical machine learning models, and high-performance data systems.",
     bio: [
       "I am a Computer Science & Engineering undergrad (CSE'28) building at the intersection of full-stack web engineering, algorithms, and applied machine learning.",
