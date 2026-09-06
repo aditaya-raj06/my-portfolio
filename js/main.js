@@ -246,6 +246,7 @@
 
     document.querySelectorAll('.link-github').forEach(btn => (btn.href = socials.github || '#'));
     document.querySelectorAll('.link-linkedin').forEach(btn => (btn.href = socials.linkedin || '#'));
+    document.querySelectorAll('.link-instagram').forEach(btn => (btn.href = socials.instagram || '#'));
     document.querySelectorAll('.link-twitter').forEach(btn => (btn.href = socials.twitter || '#'));
     document.querySelectorAll('.link-email').forEach(btn => (btn.href = socials.email || '#'));
   }
@@ -474,6 +475,7 @@ ${portfolioData.personal.tagline}
 📧 Email: <span style="color: #10b981;">${portfolioData.personal?.email || 'N/A'}</span>
 🐙 GitHub: ${portfolioData.socials?.github || '#'}
 💼 LinkedIn: ${portfolioData.socials?.linkedin || '#'}
+📸 Instagram: ${portfolioData.socials?.instagram || '#'}
 🐦 Twitter/X: ${portfolioData.socials?.twitter || '#'}
           `);
           break;

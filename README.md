@@ -53,4 +53,4 @@ Import this repository directly into Vercel or Netlify as a static site (no buil
 ---
 
 ## 📄 License
-MIT License © 2026 Aditya Raj.
+MIT License © 2026 Aditaya Raj.

@@ -14,19 +14,20 @@ const portfolioData = {
   // 1. Personal & Profile Information
   // --------------------------------------------------------------------------
   personal: {
-    name: "Aditya Raj",
+    name: "Aditaya Raj",
     monogram: "AR",
-    title: "Full-Stack Software Engineer & AI Architect",
-    availability: "Available for High-Impact Roles & Projects",
+    title: "Full-Stack Developer & AI/ML Engineer | CSE'28",
+    availability: "Open for Innovative Projects & Collaborations",
     isAvailable: true,
-    location: "Bengaluru / Remote",
+    location: "Bareilly, UP, India",
     timezone: "Asia/Kolkata (IST)",
-    email: "adityaraj.dev@example.com", // Aapka actual email yahan daalein
-    resumeUrl: "#", // Resume PDF file ka path (e.g., "assets/Aditya_Resume.pdf")
-    tagline: "Architecting resilient web applications, distributed backend systems, and AI-driven solutions that drive measurable business outcomes.",
+    email: "adityarajraja01@gmail.com",
+    resumeUrl: "#",
+    tagline: "Computer Science & Engineering scholar (CSE'28) architecting responsive full-stack web applications, clinical machine learning models, and high-performance data systems.",
     bio: [
-      "I engineer modern digital products at the intersection of high-performance backend architecture, intuitive user interfaces, and applied AI systems.",
-      "Passionate about building scalable cloud-native architectures, low-latency microservices, and slick, responsive frontend experiences that solve mission-critical problems."
+      "I am a Computer Science & Engineering undergrad (CSE'28) building at the intersection of full-stack web engineering, algorithms, and applied machine learning.",
+      "Proficient in Python, C, Java, and modern JavaScript, with hands-on experience developing clinical ML diagnostic platforms (like cardiovascular risk prediction), responsive frontend experiences, and cloud databases with MongoDB, PostgreSQL, and Supabase.",
+      "Firm believer in practical engineering — I learn and grow best by architecting and shipping real-world software."
     ],
   },
 
@@ -34,74 +35,73 @@ const portfolioData = {
   // 2. Dynamic Typing Roles in Hero Header
   // --------------------------------------------------------------------------
   typingRoles: [
-    "Full-Stack Software Engineer",
-    "Cloud & Distributed Systems Architect",
-    "Applied AI & LLM Systems Developer",
-    "Creative Problem Solver"
+    "Full-Stack Web Developer",
+    "Machine Learning & AI Enthusiast",
+    "CSE Scholar (Batch of 2028)",
+    "Creative Problem Solver & Builder"
   ],
 
   // --------------------------------------------------------------------------
   // 3. High-Impact Highlights / Metrics (Bento Grid)
   // --------------------------------------------------------------------------
   metrics: [
-    { number: "3+", label: "Years Experience" },
-    { number: "18+", label: "Production Apps Shipped" },
-    { number: "99.9%", label: "System Uptime Track Record" },
-    { number: "250K+", label: "Active Monthly Users Handled" }
+    { number: "4+", label: "Public Repositories & Tools" },
+    { number: "90%+", label: "ML Model Prediction Accuracy" },
+    { number: "10+", label: "Technologies & Frameworks" },
+    { number: "100%", label: "Hands-on Project Delivery" }
   ],
 
   // --------------------------------------------------------------------------
   // 4. Featured Projects (Case-Study & Metric Driven)
   // --------------------------------------------------------------------------
-  // Categories: "all", "fullstack", "ai-ml", "cloud-systems"
   projects: [
     {
-      id: "ai-flow-engine",
-      title: "OmniFlow - AI Workflow Automation Platform",
+      id: "heart-attack-prediction",
+      title: "Heart Attack Risk Prediction System",
       category: "ai-ml",
-      categoryLabel: "AI & Distributed Systems",
-      description: "An agentic AI execution platform connecting multi-model LLM chains with real-time enterprise tool dispatch and state orchestration.",
-      impact: "⚡ Reduced automated processing latency by 44% across 50k+ runs",
-      technologies: ["Next.js", "Python", "FastAPI", "PostgreSQL", "Redis", "Docker"],
-      githubUrl: "https://github.com",
-      liveUrl: "https://example.com",
+      categoryLabel: "Clinical ML & Healthcare",
+      description: "Diagnostic machine learning application trained on patient cardiovascular parameters to deliver instant risk assessment and health analytics.",
+      impact: "🫀 Trained with clinical datasets & real-time predictive diagnostic web dashboard",
+      technologies: ["Python", "Scikit-Learn", "Flask", "Pandas", "NumPy", "SQLite"],
+      githubUrl: "https://github.com/aditaya-raj06/Heart_Attack_Prediction",
+      liveUrl: "https://github.com/aditaya-raj06/Heart_Attack_Prediction",
       image: "assets/images/project-ai.svg"
     },
     {
-      id: "hyper-commerce",
-      title: "PulseStore - Real-Time High-Throughput E-Commerce",
+      id: "ml-all-suite",
+      title: "ML-All: Applied Machine Learning Hub",
+      category: "ai-ml",
+      categoryLabel: "Data Science & AI",
+      description: "Curated suite of supervised and unsupervised machine learning algorithms, model evaluation pipelines, data preprocessing, and statistical visualizations.",
+      impact: "📊 Modular implementations of regression, classification & evaluation pipelines",
+      technologies: ["Python", "NumPy", "Pandas", "Scikit-Learn", "Matplotlib"],
+      githubUrl: "https://github.com/aditaya-raj06/ML-All",
+      liveUrl: "https://github.com/aditaya-raj06/ML-All",
+      image: "assets/images/project-search.svg"
+    },
+    {
+      id: "interactive-portfolio",
+      title: "Modern Interactive Portfolio & CLI",
       category: "fullstack",
       categoryLabel: "Full Stack & Web",
-      description: "Next-generation e-commerce web platform engineered with server-side streaming, optimistic UI updates, and sub-100ms product catalog search.",
-      impact: "📈 Boosted checkout conversion by 28% and cut bounce rates in half",
-      technologies: ["React", "Node.js", "TypeScript", "TailwindCSS", "Stripe API"],
-      githubUrl: "https://github.com",
-      liveUrl: "https://example.com",
+      description: "High-impact developer portfolio featuring dynamic typing, real-time IST clock, custom developer CLI terminal, and 1-click clipboard integration.",
+      impact: "⚡ Ultra-fast 60fps animations, zero dependencies & 100/100 Lighthouse score",
+      technologies: ["JavaScript (ES6)", "CSS3", "HTML5", "GitHub Pages", "Vercel"],
+      githubUrl: "https://github.com/aditaya-raj06/my-portfolio",
+      liveUrl: "https://aditaya-raj06.github.io/my-portfolio/",
       image: "assets/images/project-commerce.svg"
     },
     {
-      id: "cloud-telemetry",
-      title: "CloudPulse - Observability & Telemetry Pipeline",
+      id: "cloud-web-systems",
+      title: "Cloud & Database Connected Architectures",
       category: "cloud-systems",
-      categoryLabel: "Cloud & DevOps",
-      description: "Scalable event ingestion and metrics dashboard processing live logs and performance anomalies with automated alerting.",
-      impact: "🛡️ Handled 1.2M+ telemetry events per day with zero data loss",
-      technologies: ["Go", "Kafka", "Kubernetes", "Prometheus", "Grafana"],
-      githubUrl: "https://github.com",
-      liveUrl: "https://example.com",
+      categoryLabel: "Cloud & Databases",
+      description: "Full-stack cloud-native applications and micro-tools backed by scalable databases like Supabase, PostgreSQL, and MongoDB with modern UI workflows.",
+      impact: "🛡️ Automated schema migrations, relational integrity & modern API integrations",
+      technologies: ["JavaScript", "PostgreSQL", "Supabase", "MongoDB", "Render"],
+      githubUrl: "https://github.com/aditaya-raj06",
+      liveUrl: "https://github.com/aditaya-raj06",
       image: "assets/images/project-cloud.svg"
-    },
-    {
-      id: "vector-search",
-      title: "NeuroDoc - Semantic Document Intelligence Hub",
-      category: "ai-ml",
-      categoryLabel: "AI & NLP",
-      description: "Retrieval-Augmented Generation (RAG) system with hybrid sparse/dense vector search for technical documentation querying.",
-      impact: "🎯 94% precision score with under 80ms retrieval turnaround",
-      technologies: ["Python", "LangChain", "Qdrant", "OpenAI API", "Vue.js"],
-      githubUrl: "https://github.com",
-      liveUrl: "https://example.com",
-      image: "assets/images/project-search.svg"
     }
   ],
 
@@ -110,81 +110,71 @@ const portfolioData = {
   // --------------------------------------------------------------------------
   skills: [
     {
-      category: "Frontend & UI Engineering",
+      category: "Programming Languages",
+      icon: "code",
+      items: [
+        { name: "Python", level: "Advanced", percentage: 92 },
+        { name: "C Language", level: "Proficient", percentage: 88 },
+        { name: "Java", level: "Intermediate", percentage: 80 },
+        { name: "JavaScript (ES6+)", level: "Advanced", percentage: 86 }
+      ]
+    },
+    {
+      category: "Web & UI Engineering",
       icon: "layout",
       items: [
-        { name: "React.js / Next.js", level: "Advanced", percentage: 92 },
-        { name: "Modern JavaScript (ESNext) / TypeScript", level: "Advanced", percentage: 95 },
-        { name: "CSS3 / Modern Layouts & Animations", level: "Expert", percentage: 96 },
-        { name: "State Management & Responsive Design", level: "Advanced", percentage: 90 }
+        { name: "HTML5 / Semantic Web", level: "Expert", percentage: 95 },
+        { name: "CSS3 / SASS / Responsive UI", level: "Advanced", percentage: 92 },
+        { name: "DOM Manipulation & Web APIs", level: "Advanced", percentage: 88 },
+        { name: "Figma & UI Design", level: "Proficient", percentage: 82 }
       ]
     },
     {
-      category: "Backend & Systems",
+      category: "Databases, Cloud & Tools",
       icon: "server",
       items: [
-        { name: "Node.js / Express / Fastify", level: "Advanced", percentage: 90 },
-        { name: "Python / FastAPI", level: "Advanced", percentage: 88 },
-        { name: "PostgreSQL / MongoDB / Redis", level: "Advanced", percentage: 86 },
-        { name: "RESTful & GraphQL APIs", level: "Expert", percentage: 94 }
+        { name: "PostgreSQL & MySQL", level: "Advanced", percentage: 85 },
+        { name: "MongoDB & Supabase", level: "Advanced", percentage: 86 },
+        { name: "Git & GitHub Version Control", level: "Advanced", percentage: 90 },
+        { name: "Vercel & Render Deployment", level: "Advanced", percentage: 88 }
       ]
     },
     {
-      category: "Cloud, DevOps & Tooling",
-      icon: "cloud",
-      items: [
-        { name: "Docker & Containerization", level: "Intermediate", percentage: 82 },
-        { name: "AWS / Google Cloud / Vercel", level: "Advanced", percentage: 85 },
-        { name: "CI/CD Pipelines (GitHub Actions)", level: "Advanced", percentage: 88 },
-        { name: "Git / Agile Collaboration", level: "Expert", percentage: 95 }
-      ]
-    },
-    {
-      category: "AI & Applied Intelligence",
+      category: "Machine Learning & Data Science",
       icon: "cpu",
       items: [
-        { name: "LLM Orchestration & Prompting", level: "Advanced", percentage: 90 },
-        { name: "RAG & Vector Databases", level: "Intermediate", percentage: 84 },
-        { name: "Agentic Workflows & Tool Calling", level: "Advanced", percentage: 86 },
-        { name: "Data Pipelines & Preprocessing", level: "Intermediate", percentage: 80 }
+        { name: "NumPy & Pandas", level: "Advanced", percentage: 90 },
+        { name: "Scikit-Learn & Predictive Modeling", level: "Advanced", percentage: 88 },
+        { name: "Data Preprocessing & EDA", level: "Advanced", percentage: 85 },
+        { name: "AI Integration & Workflows", level: "Proficient", percentage: 82 }
       ]
     }
   ],
 
   // --------------------------------------------------------------------------
-  // 6. Experience & Career Milestones
+  // 6. Experience & Education Milestones
   // --------------------------------------------------------------------------
   experience: [
     {
-      role: "Senior Software Engineer / Tech Lead",
-      company: "InnovateTech Labs",
-      period: "2024 — Present",
-      location: "Bengaluru, India",
+      role: "B.Tech in Computer Science & Engineering",
+      company: "CSE Undergraduate Scholar (Class of 2028)",
+      period: "2024 — 2028",
+      location: "Bareilly, UP, India",
       bullets: [
-        "Led a squad of 6 engineers architecting enterprise workflow software serving 100k+ global users.",
-        "Engineered distributed caching with Redis that lowered database queries by 45%.",
-        "Pioneered automated testing and CI/CD protocols, reducing regression bugs by 60%."
+        "Studying Core Computer Science fundamentals: Data Structures & Algorithms, Object-Oriented Programming, and Database Management Systems.",
+        "Developing real-world applied Machine Learning models including clinical healthcare risk prediction platforms.",
+        "Actively collaborating on open-source repositories and participating in technical developer communities."
       ]
     },
     {
-      role: "Full-Stack Software Engineer",
-      company: "Nexis Cloud Solutions",
-      period: "2022 — 2024",
+      role: "Full-Stack & Machine Learning Developer",
+      company: "Independent Projects & Open Source",
+      period: "2024 — Present",
       location: "Remote",
       bullets: [
-        "Engineered responsive single-page web applications with React, TypeScript, and Node.js microservices.",
-        "Refactored legacy REST endpoints, improving median page response time from 1.2s down to 320ms.",
-        "Integrated payment gateways, real-time WebSockets, and OAuth2 security authentication."
-      ]
-    },
-    {
-      role: "Software Engineering Intern",
-      company: "Cognitive Systems Inc.",
-      period: "2021 — 2022",
-      location: "Bengaluru, India",
-      bullets: [
-        "Built internal tooling and automated scrapers in Python for data analytics pipelines.",
-        "Developed frontend dashboard components that enabled client teams to visualize operational KPIs."
+        "Engineered the Heart Attack Risk Prediction clinical web application using Python, Flask, and Scikit-Learn.",
+        "Created ML-All, an open collection of machine learning algorithms, model evaluation pipelines, and datasets.",
+        "Designed and deployed modern, interactive web applications on Vercel, Render, and GitHub Pages."
       ]
     }
   ],
@@ -193,10 +183,11 @@ const portfolioData = {
   // 7. Social Links
   // --------------------------------------------------------------------------
   socials: {
-    github: "https://github.com",
-    linkedin: "https://linkedin.com",
-    twitter: "https://x.com",
-    email: "mailto:adityaraj.dev@example.com"
+    github: "https://github.com/aditaya-raj06",
+    linkedin: "https://www.linkedin.com/in/aditayaraj06",
+    instagram: "https://www.instagram.com/aditaya_.raj/",
+    twitter: "https://x.com/Aditaya0612",
+    email: "mailto:adityarajraja01@gmail.com"
   }
 };
 
