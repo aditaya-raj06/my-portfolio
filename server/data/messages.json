@@ -1,0 +1,29 @@
+[
+  {
+    "id": "msg_1788719029327_4f0f3",
+    "name": "Vikram Mehta",
+    "email": "vikram@innovate.co",
+    "subject": "Full-Stack + ML Project",
+    "message": "Hello Aditaya, we would like to interview you for a Machine Learning engineer role.",
+    "receivedAt": "2026-09-06T18:23:49.327Z",
+    "ip": "::1"
+  },
+  {
+    "id": "msg_1788718972817_45hzq",
+    "name": "Vikram MehtaVikram Mehta",
+    "email": "vikram@innovate.co",
+    "subject": "Full-Stack + ML Project",
+    "message": "Hello Aditaya, we would like to interview you for a Machine Learning engineer role.",
+    "receivedAt": "2026-09-06T18:22:52.817Z",
+    "ip": "::1"
+  },
+  {
+    "id": "msg_1788718329380_aeyam",
+    "name": "Priya Sharma",
+    "email": "priya@example.com",
+    "subject": "Project Collaboration",
+    "message": "Hi Aditaya, loved your Heart Attack Prediction project! Would love to collaborate.",
+    "receivedAt": "2026-09-06T18:12:09.380Z",
+    "ip": "::1"
+  }
+]

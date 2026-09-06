@@ -1,54 +1,76 @@
-# High-Impact Developer Portfolio & Interactive Terminal
+# High-Impact Developer Portfolio with Real-Time GitHub Sync & Backend API
 
-A modern, fast, and metric-driven portfolio website designed for software engineers, full-stack developers, and AI engineers. Built with vanilla web standards (HTML5, CSS3, modern JavaScript) for instantaneous load times and zero build dependencies.
+A modern, fast, and metric-driven portfolio website and backend engine designed for software engineers, full-stack developers, and AI engineers. Engineered with a dual-mode architecture: runs as a full Node.js + Express backend service with real-time GitHub auto-sync, or as an ultra-fast static site.
 
 ---
 
 ## ✨ Flagship Highlights
 
-- **Aesthetic Excellence**: Dark luxury obsidian theme with ambient neon glows, glassmorphism (`backdrop-filter: blur`), and micro-interactions.
-- **Metrics-Driven Case Studies**: Showcase projects with real-world quantifiable ROI (e.g., latency reduction, throughput, user adoption), not just simple static thumbnails.
-- **Interactive Developer CLI Terminal**: A functional terminal console allowing technical recruiters and visitors to interact with commands like `help`, `about`, `skills`, `projects`, `contact`, and `clear`.
-- **Live Timezone Clock**: Real-time IST clock in the Bento Grid showing presence and availability.
-- **1-Click Email Copy**: Smooth toast notification feedback for fast contact engagement.
-- **100% Data-Driven Architecture**: Easily update your entire portfolio by editing a single file: `js/portfolio-data.js`.
+- **⚡ Real-Time GitHub Auto-Sync**: Automatically ingests all your public GitHub repositories, stars, language tags, and project descriptions in real-time. If you create, edit, or delete a repository on GitHub, your portfolio updates dynamically!
+- **📬 Essential Backend APIs**:
+  - **`GET /api/portfolio`**: Delivers live synced GitHub projects with smart category inference and impact metrics.
+  - **`POST /api/contact`**: Validates visitor inquiries and safely records messages in `server/data/messages.json`.
+  - **`POST /api/webhook/github`**: GitHub webhook listener for instantaneous push/delete cache re-synchronization.
+  - **`GET /api/analytics`**: Real-time visitor presence and server health metrics.
+- **🛡️ Resilient Dual-Mode Hybrid Architecture**:
+  - Works with the full Node.js backend server on Render, Railway, Vercel, or local machine.
+  - Also includes client-side fallback to GitHub's public REST API if hosted statically on GitHub Pages!
+- **🎨 Aesthetic Excellence**: Deep Obsidian dark theme with ambient neon glows, glassmorphism (`backdrop-filter: blur`), and micro-interactions.
+- **🖥️ Interactive Developer CLI Terminal**: Functional terminal allowing technical evaluators to run `help`, `about`, `skills`, `projects`, `contact`, and `clear`.
+- **🕒 Live Timezone Clock**: Real-time IST presence clock in the Bento Grid.
+- **💬 Interactive Contact Form**: Full AJAX submission with loading state, anti-spam validation, and instant feedback toast.
 
 ---
 
-## 🚀 Quick Start & Customization
+## 🚀 Quick Start (Running Locally)
 
-### 1. Run Locally
-You can run this project with any local static server, or simply open `index.html` directly in your browser:
-
+### 1. Start the Full Node.js Backend Server
 ```bash
-# Using Python
-python3 -m http.server 3000
+# Install dependencies
+npm install
 
-# Or using Node / npx serve
-npx serve .
+# Start production server
+npm start
+
+# Or start in watch/development mode
+npm run dev
 ```
 
-### 2. Update Your Personal Information
-Open `js/portfolio-data.js` and customize:
-- **`personal`**: Name, monogram, title, bio, location, email, and resume link.
-- **`typingRoles`**: Array of roles displayed in the animated hero typewriter.
-- **`metrics`**: Numbers and labels in the Bento Grid.
-- **`projects`**: Featured project cards, categories, impact badges, and live demo links.
-- **`skills`**: Technical competencies, categories, and proficiency bars.
-- **`experience`**: Career journey, company milestones, and bullet points.
-- **`socials`**: GitHub, LinkedIn, Twitter/X, and Email links.
+The application will be live at:
+- **Web App**: `http://localhost:3001`
+- **Live Sync API**: `http://localhost:3001/api/portfolio`
+- **Contact API**: `http://localhost:3001/api/contact`
+- **Health Check**: `http://localhost:3001/health`
 
 ---
 
-## 🌐 Free 1-Click Deployment
+## ⚡ Setting up GitHub Instant Auto-Sync (Webhook)
 
-### Deploy to GitHub Pages:
+When you deploy this portfolio backend to a live URL (e.g. on Render, Railway, or Vercel):
+1. Go to your GitHub profile or repository settings.
+2. Navigate to **Webhooks** -> **Add webhook**.
+3. Set **Payload URL** to:
+   `https://your-portfolio-domain.com/api/webhook/github`
+4. Set **Content type** to `application/json`.
+5. Select **Send me everything** (or *Pushes* and *Repositories*).
+6. Click **Add webhook**.
+
+Now, whenever you push code, create a new project, or delete a repository on GitHub, GitHub will instantly ping your portfolio and update it in real-time!
+
+---
+
+## 🌐 Deployment Options
+
+### Option A: Full Backend Deployment (Recommended)
+Deploy directly on **Render**, **Railway**, or **Vercel**:
+- Build Command: `npm install`
+- Start Command: `npm start`
+- Root Directory: `./`
+
+### Option B: Static Deployment (GitHub Pages)
 1. Go to your repository settings on GitHub.
 2. Under **Pages**, select **Branch: main** and folder **/(root)**.
-3. Click **Save**. Your site will be live in seconds!
-
-### Deploy to Vercel / Netlify:
-Import this repository directly into Vercel or Netlify as a static site (no build command needed).
+3. Click **Save**. The client-side live sync engine will automatically query the GitHub API directly from the browser!
 
 ---
 

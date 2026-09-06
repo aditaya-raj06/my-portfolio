@@ -31,6 +31,18 @@
     initMobileMenu();
     initActiveNavTracking();
     initTerminal(portfolioData);
+
+    // Initialize dynamic contact form
+    if (typeof window.initContactForm === 'function') {
+      window.initContactForm();
+    }
+
+    // Initialize real-time GitHub live sync
+    if (typeof window.initLiveSync === 'function') {
+      window.initLiveSync(portfolioData, () => {
+        renderProjects(portfolioData, 'all');
+      });
+    }
   }
 
   // --------------------------------------------------------------------------

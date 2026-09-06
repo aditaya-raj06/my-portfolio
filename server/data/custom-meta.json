@@ -1,0 +1,26 @@
+{
+  "Heart_Attack_Prediction": {
+    "title": "Heart Attack Risk Prediction System",
+    "category": "ai-ml",
+    "categoryLabel": "Clinical ML & Healthcare",
+    "impact": "🫀 Trained with clinical datasets & real-time predictive diagnostic web dashboard",
+    "image": "assets/images/project-ai.svg",
+    "pinned": true
+  },
+  "ML-All": {
+    "title": "ML-All: Applied Machine Learning Hub",
+    "category": "ai-ml",
+    "categoryLabel": "Data Science & AI",
+    "impact": "📊 Modular implementations of regression, classification & evaluation pipelines",
+    "image": "assets/images/project-search.svg",
+    "pinned": true
+  },
+  "my-portfolio": {
+    "title": "Modern Interactive Portfolio & CLI",
+    "category": "fullstack",
+    "categoryLabel": "Full Stack & Web",
+    "impact": "⚡ Real-time GitHub sync backend, 60fps animations & 100/100 Lighthouse score",
+    "image": "assets/images/project-commerce.svg",
+    "pinned": true
+  }
+}
