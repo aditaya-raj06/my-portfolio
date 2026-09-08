@@ -1047,3 +1047,312 @@
 .footer-links a:hover {
   color: var(--text-primary);
 }
+
+/* --------------------------------------------------------------------------
+   11. GEET AI ASSISTANT (Apple Frosted Glass Chat Widget)
+   -------------------------------------------------------------------------- */
+.geet-trigger {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.7rem 1.25rem;
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: var(--radius-full);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.04);
+  cursor: pointer;
+  transition: all var(--transition-base);
+}
+
+.geet-trigger:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 12px 36px rgba(0, 113, 227, 0.2);
+  border-color: rgba(0, 113, 227, 0.3);
+}
+
+.geet-sparkle-icon {
+  font-size: 1.1rem;
+  animation: pulseRadar 2.5s infinite;
+}
+
+.geet-trigger-text {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: #1d1d1f;
+  letter-spacing: -0.01em;
+}
+
+.geet-trigger-badge {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  padding: 0.15rem 0.45rem;
+  background: rgba(0, 113, 227, 0.1);
+  color: #0071e3;
+  border-radius: var(--radius-full);
+  font-weight: 600;
+}
+
+/* Chat Modal Window */
+.geet-modal {
+  position: fixed;
+  bottom: 5.5rem;
+  right: 2rem;
+  width: 380px;
+  max-width: calc(100vw - 2.5rem);
+  height: 520px;
+  max-height: calc(100vh - 7rem);
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: saturate(180%) blur(24px);
+  -webkit-backdrop-filter: saturate(180%) blur(24px);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: var(--radius-xl);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.15), 0 4px 16px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  z-index: 1000;
+  opacity: 0;
+  transform: translateY(20px) scale(0.95);
+  pointer-events: none;
+  transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+}
+
+.geet-modal.active {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+/* Chat Header */
+.geet-header {
+  padding: 0.95rem 1.25rem;
+  background: rgba(245, 245, 247, 0.85);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.geet-header-left {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.geet-avatar-badge {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #0071e3 0%, #a855f7 100%);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+}
+
+.geet-title {
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: #1d1d1f;
+  line-height: 1.2;
+}
+
+.geet-subtitle {
+  font-size: 0.72rem;
+  color: #86868b;
+}
+
+.geet-close-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.05);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #6e6e73;
+  transition: all var(--transition-fast);
+}
+
+.geet-close-btn:hover {
+  background: rgba(0, 0, 0, 0.1);
+  color: #1d1d1f;
+}
+
+/* Chat Message Body */
+.geet-body {
+  flex-grow: 1;
+  padding: 1.2rem;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  background: #ffffff;
+}
+
+.geet-msg {
+  display: flex;
+  gap: 0.6rem;
+  max-width: 88%;
+}
+
+.geet-msg-geet {
+  align-self: flex-start;
+}
+
+.geet-msg-user {
+  align-self: flex-end;
+  flex-direction: row-reverse;
+}
+
+.geet-msg-avatar {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: #f5f5f7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  flex-shrink: 0;
+}
+
+.geet-msg-content {
+  padding: 0.7rem 0.95rem;
+  border-radius: var(--radius-lg);
+  font-size: 0.84rem;
+  line-height: 1.5;
+}
+
+.geet-msg-geet .geet-msg-content {
+  background: #f5f5f7;
+  color: #1d1d1f;
+  border-top-left-radius: 4px;
+}
+
+.geet-msg-user .geet-msg-content {
+  background: #0071e3;
+  color: #ffffff;
+  border-top-right-radius: 4px;
+}
+
+.geet-inline-link {
+  color: #0071e3;
+  text-decoration: underline;
+  font-weight: 500;
+}
+
+.geet-msg-user .geet-inline-link {
+  color: #ffffff;
+}
+
+/* Quick Suggestion Chips */
+.geet-chips-container {
+  padding: 0.5rem 1rem;
+  background: #fafafc;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+  display: flex;
+  gap: 0.4rem;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+.geet-quick-chip {
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  padding: 0.3rem 0.65rem;
+  border-radius: var(--radius-full);
+  font-size: 0.72rem;
+  color: #4b5563;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  flex-shrink: 0;
+}
+
+.geet-quick-chip:hover {
+  background: rgba(0, 113, 227, 0.08);
+  color: #0071e3;
+  border-color: rgba(0, 113, 227, 0.2);
+}
+
+/* Chat Input Bar */
+.geet-footer {
+  padding: 0.75rem 1rem;
+  background: #ffffff;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.geet-input-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.geet-input {
+  flex-grow: 1;
+  background: #f5f5f7;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: var(--radius-full);
+  padding: 0.6rem 1rem;
+  font-family: var(--font-sans);
+  font-size: 0.84rem;
+  color: #1d1d1f;
+  outline: none;
+  transition: all var(--transition-fast);
+}
+
+.geet-input:focus {
+  background: #ffffff;
+  border-color: #0071e3;
+  box-shadow: 0 0 0 2px rgba(0, 113, 227, 0.15);
+}
+
+.geet-send-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #0071e3;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all var(--transition-fast);
+}
+
+.geet-send-btn:hover {
+  background: #0077ed;
+  transform: scale(1.05);
+}
+
+/* Typing Indicator Animation */
+.geet-typing-bubble {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0.55rem 0.85rem !important;
+}
+
+.geet-dot {
+  width: 5px;
+  height: 5px;
+  background: #86868b;
+  border-radius: 50%;
+  animation: geetBlink 1.4s infinite ease-in-out;
+}
+
+.geet-dot:nth-child(1) { animation-delay: 0s; }
+.geet-dot:nth-child(2) { animation-delay: 0.2s; }
+.geet-dot:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes geetBlink {
+  0%, 80%, 100% { opacity: 0.3; transform: scale(0.8); }
+  40% { opacity: 1; transform: scale(1.1); }
+}

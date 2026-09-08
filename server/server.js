@@ -6,6 +6,7 @@ import dotenv from 'dotenv';
 
 import apiRoutes from './routes/api.js';
 import webhookRoutes from './routes/webhook.js';
+import geetRoutes from './routes/geet.js';
 
 dotenv.config();
 
@@ -36,6 +37,7 @@ app.use((req, res, next) => {
 // API Routes
 app.use('/api', apiRoutes);
 app.use('/api/webhook', webhookRoutes);
+app.use('/api/geet', geetRoutes);
 
 // Health Endpoint
 app.get('/health', (req, res) => {
