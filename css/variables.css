@@ -93,3 +93,46 @@
   --container-max: 1180px;
   --nav-height: 68px;
 }
+
+/* ==========================================================================
+   Apple macOS Dark Mode System Tokens
+   Active when [data-theme="dark"] is applied on <html>
+   ========================================================================== */
+[data-theme="dark"] {
+  /* Apple macOS Dark Canvas & Card Surfaces */
+  --bg-primary: #121316;
+  --bg-secondary: #1a1b1f;
+  --bg-tertiary: #222329;
+  --bg-surface: #1a1b1f;
+  --bg-elevated: #222329;
+
+  /* Apple Frosted Glass Tokens (Dark Glassmorphism) */
+  --glass-bg: rgba(26, 27, 31, 0.85);
+  --glass-bg-hover: rgba(34, 35, 41, 0.95);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-border-hover: rgba(255, 255, 255, 0.2);
+  --glass-specular: inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
+
+  /* Apple Typography Colors for Dark Mode */
+  --text-primary: #f5f5f7;
+  --text-secondary: #a1a1a6;
+  --text-muted: #86868b;
+  --text-inverse: #1d1d1f;
+
+  /* Apple Interactive Accents (Vibrant for dark background) */
+  --accent-primary: #2997ff;
+  --accent-hover: #0071e3;
+  --accent-cyan: #38bdf8;
+  --accent-emerald: #34d399;
+  --accent-amber: #fbbf24;
+
+  /* Apple Luxury Gradients for Dark Mode */
+  --gradient-headline: linear-gradient(180deg, #ffffff 20%, #a1a1a6 100%);
+  --gradient-apple-blue: linear-gradient(135deg, #2997ff 0%, #0071e3 100%);
+  --gradient-card: linear-gradient(180deg, rgba(28, 29, 34, 0.9) 0%, rgba(20, 21, 25, 0.6) 100%);
+
+  /* Apple Dark Elevation Shadows */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4), 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 18px -2px rgba(0, 0, 0, 0.5), 0 2px 6px -1px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 14px 34px -4px rgba(0, 0, 0, 0.6), 0 4px 12px -2px rgba(0, 0, 0, 0.4);
+}

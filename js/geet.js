@@ -2,6 +2,7 @@
  * ==============================================================================
  * GEET - ADITAYA'S INTELLIGENT PORTFOLIO AI ASSISTANT
  * Conversational UI & Client-Side Hybrid Knowledge Engine
+ * With Full Voice Mode (Speech-to-Text & Text-to-Speech)
  * ==============================================================================
  */
 
@@ -20,8 +21,39 @@
     const chatForm = document.getElementById('geet-chat-form');
     const chatInput = document.getElementById('geet-chat-input');
     const quickChips = document.querySelectorAll('.geet-quick-chip');
+    const micBtn = document.getElementById('geet-mic-btn');
+    const audioBtn = document.getElementById('geet-audio-btn');
 
     if (!triggerBtn || !chatModal) return;
+
+    let isAudioMuted = localStorage.getItem('geet_audio_muted') === 'true';
+    let isListening = false;
+    let recognition = null;
+
+    // Initialize Audio Toggle state
+    updateAudioBtnDisplay();
+
+    if (audioBtn) {
+      audioBtn.addEventListener('click', () => {
+        isAudioMuted = !isAudioMuted;
+        localStorage.setItem('geet_audio_muted', isAudioMuted);
+        updateAudioBtnDisplay();
+        if (isAudioMuted && window.speechSynthesis) {
+          window.speechSynthesis.cancel();
+        }
+      });
+    }
+
+    function updateAudioBtnDisplay() {
+      if (!audioBtn) return;
+      const onIcon = audioBtn.querySelector('.audio-icon-on');
+      const offIcon = audioBtn.querySelector('.audio-icon-off');
+      if (onIcon && offIcon) {
+        onIcon.style.display = isAudioMuted ? 'none' : 'inline-block';
+        offIcon.style.display = isAudioMuted ? 'inline-block' : 'none';
+      }
+      audioBtn.setAttribute('title', isAudioMuted ? 'Voice Muted (Click to Unmute)' : 'Voice Enabled (Click to Mute)');
+    }
 
     // Toggle Modal
     triggerBtn.addEventListener('click', () => {
@@ -34,6 +66,10 @@
 
     closeBtn?.addEventListener('click', () => {
       chatModal.classList.remove('active');
+      if (window.speechSynthesis) {
+        window.speechSynthesis.cancel();
+      }
+      stopVoiceRecognition();
     });
 
     // Quick Prompt Chips
@@ -53,6 +89,123 @@
       sendMessage(text);
     });
 
+    // =========================================================================
+    // VOICE MODE: SPEECH-TO-TEXT (MICROPHONE INPUT)
+    // =========================================================================
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+    if (SpeechRecognition) {
+      recognition = new SpeechRecognition();
+      recognition.continuous = false;
+      recognition.interimResults = false;
+      recognition.lang = 'en-IN'; // Indian English / Hinglish friendly
+
+      recognition.onstart = () => {
+        isListening = true;
+        micBtn?.classList.add('listening');
+        if (chatInput) chatInput.placeholder = 'Listening... Speak now';
+      };
+
+      recognition.onresult = (event) => {
+        const transcript = event.results[0][0].transcript;
+        if (chatInput) chatInput.value = transcript;
+        stopVoiceRecognition();
+        if (transcript.trim()) {
+          sendMessage(transcript.trim());
+          if (chatInput) chatInput.value = '';
+        }
+      };
+
+      recognition.onerror = (event) => {
+        stopVoiceRecognition();
+        if (event.error !== 'no-speech') {
+          console.warn('Speech recognition warning:', event.error);
+        }
+      };
+
+      recognition.onend = () => {
+        stopVoiceRecognition();
+      };
+    }
+
+    micBtn?.addEventListener('click', () => {
+      if (!recognition) {
+        if (window.PortfolioUtils && window.PortfolioUtils.showToast) {
+          window.PortfolioUtils.showToast('Speech recognition not supported in this browser.');
+        } else {
+          alert('Speech recognition is supported in Google Chrome, Safari, and Edge.');
+        }
+        return;
+      }
+
+      if (isListening) {
+        stopVoiceRecognition();
+      } else {
+        try {
+          recognition.start();
+        } catch (err) {
+          stopVoiceRecognition();
+        }
+      }
+    });
+
+    function stopVoiceRecognition() {
+      isListening = false;
+      micBtn?.classList.remove('listening');
+      if (chatInput) chatInput.placeholder = 'Ask Geet or tap mic to speak...';
+      try {
+        recognition?.stop();
+      } catch (e) {}
+    }
+
+    // =========================================================================
+    // VOICE MODE: TEXT-TO-SPEECH (AUDIO RESPONSE)
+    // =========================================================================
+    function speakText(rawText) {
+      if (isAudioMuted || !('speechSynthesis' in window)) return;
+
+      // Stop previous utterance
+      window.speechSynthesis.cancel();
+
+      // Clean markdown, links and emojis for pristine speech output
+      const clean = rawText
+        .replace(/\[(.*?)\]\((.*?)\)/g, '$1')
+        .replace(/\*\*(.*?)\*\*/g, '$1')
+        .replace(/👉|✨|🚀|💻|📄|📬|📧|💼|🐙|📸|🫀|📊|⚡|•/g, '')
+        .replace(/\n+/g, '. ')
+        .trim();
+
+      if (!clean) return;
+
+      const utterance = new SpeechSynthesisUtterance(clean);
+
+      // Select voice: prioritize Indian English or Hindi if installed, fallback to standard
+      const voices = window.speechSynthesis.getVoices();
+      const preferredVoice = voices.find(v => 
+        (v.lang === 'en-IN' || v.lang === 'hi-IN') || 
+        v.name.toLowerCase().includes('india') ||
+        v.name.toLowerCase().includes('lekha')
+      ) || voices.find(v => v.lang.startsWith('en')) || voices[0];
+
+      if (preferredVoice) {
+        utterance.voice = preferredVoice;
+      }
+      utterance.rate = 1.02;
+      utterance.pitch = 1.05;
+
+      window.speechSynthesis.speak(utterance);
+    }
+
+    // Preload voices
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.onvoiceschanged = () => {
+        window.speechSynthesis.getVoices();
+      };
+    }
+
+    // =========================================================================
+    // MESSAGE HANDLING & CHAT ENGINE
+    // =========================================================================
     async function sendMessage(userText) {
       // Append user message
       appendMessage('user', userText);
@@ -85,10 +238,12 @@
         // Remove typing indicator & append bot reply
         typingEl?.remove();
         appendMessage('geet', reply);
+        speakText(reply);
       } catch (err) {
         typingEl?.remove();
         const fallbackReply = clientSideGeetAnswer(userText);
         appendMessage('geet', fallbackReply);
+        speakText(fallbackReply);
       }
     }
 
@@ -143,10 +298,10 @@
     function clientSideGeetAnswer(prompt) {
       const q = prompt.toLowerCase();
 
-      if (q.includes('who are you') || q.includes('naam') || q.includes('who is geet')) {
+      if (q.includes('who are you') || q.includes('naam') || q.includes('who is geet') || q.includes('koun')) {
         return `Namaste! Mera naam **Geet** hai. Main Aditaya Raj ki personal AI assistant hoon. Main aapko Aditaya ke projects, skills, background aur contact ke baare me sab bata sakti hoon!`;
       }
-      if (q.includes('project') || q.includes('work') || q.includes('portfolio') || q.includes('code')) {
+      if (q.includes('project') || q.includes('work') || q.includes('portfolio') || q.includes('code') || q.includes('repo')) {
         return `Aditaya ke top flagship projects:
 1. 🫀 **Heart Attack Risk Prediction System**: Clinical machine learning healthcare platform (Python, Scikit-Learn, Flask, SQLite).
 2. 📊 **ML-All**: Open-source machine learning algorithms library.
@@ -167,12 +322,12 @@
         return `Aap Aditaya ka official 1-page PDF resume yahan se download kar sakte hain:
 👉 [Download Aditaya's Resume](assets/Aditaya_Raj_Resume.pdf)`;
       }
-      if (q.includes('contact') || q.includes('hire') || q.includes('email') || q.includes('reach')) {
+      if (q.includes('contact') || q.includes('hire') || q.includes('email') || q.includes('reach') || q.includes('chat') || q.includes('meeting')) {
         return `Aap Aditaya se direct connect kar sakte hain:
+📅 **15-Min Quick Call**: Top par "Book 15-Min Call" button dabaiye!
 📧 **Email**: [adityarajraja01@gmail.com](mailto:adityarajraja01@gmail.com)
 💼 **LinkedIn**: [linkedin.com/in/aditayaraj06](https://linkedin.com/in/aditayaraj06)
-🐙 **GitHub**: [github.com/aditaya-raj06](https://github.com/aditaya-raj06)
-📸 **Instagram**: [instagram.com/aditaya_.raj](https://instagram.com/aditaya_.raj/)`;
+🐙 **GitHub**: [github.com/aditaya-raj06](https://github.com/aditaya-raj06)`;
       }
       if (q.includes('education') || q.includes('college') || q.includes('study')) {
         return `Aditaya currently **B.Tech Computer Science & Engineering (Class of 2028 / CSE'28)** pursue kar rahe hain Bareilly, UP se.`;
