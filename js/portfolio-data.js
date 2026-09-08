@@ -152,6 +152,68 @@ const portfolioData = {
   ],
 
   // --------------------------------------------------------------------------
+  // 5.1 AI & Modern Intelligence Stack (Real-World Tools)
+  // --------------------------------------------------------------------------
+  aiTools: [
+    {
+      name: "Claude (Anthropic)",
+      tagline: "Architecture & Deep Reasoning",
+      badge: "Daily Driver",
+      useCase: "Full-stack system design, complex algorithm optimization & logic",
+      icon: "claude"
+    },
+    {
+      name: "ChatGPT (OpenAI)",
+      tagline: "Prompt Engineering & Logic",
+      badge: "Core Workflow",
+      useCase: "Feature prototyping, API contracts & conceptual problem solving",
+      icon: "openai"
+    },
+    {
+      name: "Google Gemini",
+      tagline: "Multimodal Automation",
+      badge: "Proficient",
+      useCase: "Full-context codebase analysis, research & automated pair-coding",
+      icon: "gemini"
+    },
+    {
+      name: "Scikit-Learn",
+      tagline: "Clinical & Predictive ML",
+      badge: "Hands-on",
+      useCase: "Heart attack risk prediction models, hyperparameter tuning & ML-All",
+      icon: "sklearn"
+    },
+    {
+      name: "Web Speech AI",
+      tagline: "Speech Recognition & TTS",
+      badge: "In Production",
+      useCase: "Powers Geet AI voice assistant with bilingual speech & wake-words",
+      icon: "speech"
+    },
+    {
+      name: "GitHub Copilot",
+      tagline: "AI Pair Programming",
+      badge: "Acceleration",
+      useCase: "Code completion, test suite generation & refactoring acceleration",
+      icon: "copilot"
+    },
+    {
+      name: "Hugging Face",
+      tagline: "Open Models & Datasets",
+      badge: "Applied AI",
+      useCase: "Dataset exploration, model benchmarking & open-source ML pipelines",
+      icon: "huggingface"
+    },
+    {
+      name: "Cursor AI",
+      tagline: "AI-Native IDE Workflow",
+      badge: "Workflow",
+      useCase: "Multi-file editing, codebase understanding & developer speedup",
+      icon: "cursor"
+    }
+  ],
+
+  // --------------------------------------------------------------------------
   // 6. Experience & Education Milestones
   // --------------------------------------------------------------------------
   experience: [

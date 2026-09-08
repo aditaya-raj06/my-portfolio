@@ -127,6 +127,26 @@ He specializes in clinical AI systems—notably his Heart Attack Risk Prediction
 • **Databases & Cloud**: PostgreSQL, MySQL, MongoDB, SQLite, Supabase, Vercel, Render.`;
   }
 
+  // AI Tools
+  if (q.includes('ai tool') || q.includes('tools') || q.includes('claude') || q.includes('chatgpt') || q.includes('gemini') || q.includes('copilot') || q.includes('cursor')) {
+    if (inHindi) {
+      return `Aditaya apne engineering workflow me ye top AI tools leverage karte hain:
+• 🧠 **Claude (Anthropic)**: System architecture & algorithmic problem solving ke liye.
+• ⚡ **ChatGPT (OpenAI)**: Logic exploration aur rapid prototyping ke liye.
+• 🌐 **Google Gemini**: Multimodal codebase automation ke liye.
+• 🫀 **Scikit-Learn**: Clinical predictive ML (Heart Attack risk modeling).
+• 🎙️ **Web Speech AI**: Real-time voice engine jo mujhe (Geet) power karta hai!
+• 💻 **GitHub Copilot & Cursor AI**: Pair-programming aur developer speedup ke liye.`;
+    }
+    return `Aditaya leverages these modern AI tools daily:
+• 🧠 **Claude (Anthropic)**: Full-stack system architecture & deep algorithm design.
+• ⚡ **ChatGPT (OpenAI)**: Logic exploration, prompt engineering & API design.
+• 🌐 **Google Gemini**: Multimodal codebase automation & contextual analysis.
+• 🫀 **Scikit-Learn**: Clinical predictive ML for cardiovascular risk prediction.
+• 🎙️ **Web Speech AI**: Production voice engine powering me (Geet)!
+• 💻 **GitHub Copilot & Cursor AI**: High-velocity pair programming & navigation.`;
+  }
+
   // Resume / CV
   if (q.includes('resume') || q.includes('cv') || q.includes('biodata')) {
     if (inHindi) {

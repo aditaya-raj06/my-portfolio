@@ -21,6 +21,7 @@
     renderBento(portfolioData);
     renderProjects(portfolioData, 'all');
     renderSkills(portfolioData);
+    renderAITools(portfolioData);
     renderTimeline(portfolioData);
     renderSocials(portfolioData);
     initClock();
@@ -215,6 +216,45 @@
               )
               .join('')}
           </div>
+        </div>
+      `
+      )
+      .join('');
+  }
+
+  // --------------------------------------------------------------------------
+  // 5.1 Render Real-World AI Tools Stack
+  // --------------------------------------------------------------------------
+  function renderAITools(portfolioData) {
+    const container = document.getElementById('ai-tools-container');
+    if (!container || !portfolioData.aiTools) return;
+
+    const iconSvgs = {
+      claude: `<svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M13.5 3L12 8.5L10.5 3L8 4L10 9L4.5 7.5L4 10L9.5 11.5L4 13L4.5 15.5L10 14L8 19L10.5 20L12 14.5L13.5 20L16 19L14 14L19.5 15.5L20 13L14.5 11.5L20 10L19.5 7.5L14 9L16 4L13.5 3Z" fill="#D97706"/></svg>`,
+      openai: `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M12 2a10 10 0 0 0-7.07 17.07l1.41-1.41A8 8 0 1 1 12 4V2z"></path><path d="M22 12a10 10 0 0 0-17.07-7.07l1.41 1.41A8 8 0 1 1 20 12h2z"></path></svg>`,
+      gemini: `<svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 2C12 7.52 7.52 12 2 12C7.52 12 12 16.48 12 22C12 16.48 16.48 12 22 12C16.48 12 12 7.52 12 2Z" fill="url(#geminiGradient)"/><defs><linearGradient id="geminiGradient" x1="2" y1="2" x2="22" y2="22" gradientUnits="userSpaceOnUse"><stop stop-color="#4E95ED"/><stop offset="0.5" stop-color="#9965F4"/><stop offset="1" stop-color="#E879F9"/></linearGradient></defs></svg>`,
+      sklearn: `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#F59E0B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="3"></circle><circle cx="18" cy="6" r="3"></circle><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="18" r="3"></circle><line x1="9" y1="6" x2="15" y2="6"></line><line x1="6" y1="9" x2="6" y2="15"></line><line x1="18" y1="9" x2="18" y2="15"></line><line x1="9" y1="18" x2="15" y2="18"></line><line x1="8" y1="8" x2="16" y2="16"></line></svg>`,
+      speech: `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#0071E3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>`,
+      copilot: `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#8B5CF6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C6.48 2 2 6.48 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2z"></path></svg>`,
+      huggingface: `<span style="font-size: 1.35rem; line-height: 1;">🤗</span>`,
+      cursor: `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#EC4899" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3l7 18 3-7 7-3L3 3z"></path><path d="M13 13l6 6"></path></svg>`
+    };
+
+    container.innerHTML = portfolioData.aiTools
+      .map(
+        tool => `
+        <div class="ai-tool-card">
+          <div class="ai-tool-header-row">
+            <div class="ai-tool-icon-box">
+              ${iconSvgs[tool.icon] || '🤖'}
+            </div>
+            <span class="ai-tool-badge">${tool.badge}</span>
+          </div>
+          <div>
+            <div class="ai-tool-name">${tool.name}</div>
+            <div class="ai-tool-tagline">${tool.tagline}</div>
+          </div>
+          <p class="ai-tool-usecase">${tool.useCase}</p>
         </div>
       `
       )

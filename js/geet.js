@@ -331,6 +331,12 @@
         return true;
       }
 
+      // 9. 60-Second Guided Tour Action
+      if (q.includes('tour') || q.includes('guide') || q.includes('audio tour')) {
+        window.PortfolioAudioTour?.startTour();
+        return true;
+      }
+
       return false;
     }
 
@@ -398,6 +404,24 @@
 
       utterance.pitch = 1.08; // Natural, friendly Indian female cadence
       utterance.rate = 1.0;   // Conversational speed
+
+      utterance.onstart = () => {
+        if (window.DynamicIsland && !window.PortfolioAudioTour?.isTourRunning()) {
+          window.DynamicIsland.setSpeaking(true, 'Geet Speaking...');
+        }
+      };
+
+      utterance.onend = () => {
+        if (window.DynamicIsland && !window.PortfolioAudioTour?.isTourRunning()) {
+          window.DynamicIsland.setSpeaking(false);
+        }
+      };
+
+      utterance.onerror = () => {
+        if (window.DynamicIsland && !window.PortfolioAudioTour?.isTourRunning()) {
+          window.DynamicIsland.setSpeaking(false);
+        }
+      };
 
       window.speechSynthesis.speak(utterance);
     }
@@ -583,6 +607,26 @@
 • **Machine Learning**: Scikit-Learn, NumPy, Pandas, Matplotlib, Predictive Analytics.
 • **Web & Backend**: Node.js, Express.js, Flask, RESTful APIs.
 • **Databases & Cloud**: PostgreSQL, MySQL, MongoDB, SQLite, Supabase, Vercel, Render.`;
+      }
+
+      // 6.1 AI Tools
+      if (q.includes('ai tool') || q.includes('tools') || q.includes('claude') || q.includes('chatgpt') || q.includes('gemini') || q.includes('copilot') || q.includes('cursor')) {
+        if (inHindi) {
+          return `Aditaya apne engineering workflow me ye top AI tools use karte hain:
+• 🧠 **Claude (Anthropic)**: Architecture design aur complex problem solving ke liye.
+• ⚡ **ChatGPT (OpenAI)**: Logic structuring aur rapid prototyping ke liye.
+• 🌐 **Google Gemini**: Multimodal codebase automation ke liye.
+• 🫀 **Scikit-Learn**: Clinical predictive ML (Heart Attack risk modeling).
+• 🎙️ **Web Speech AI**: Real-time voice engine jo mujhe (Geet) power karta hai!
+• 💻 **GitHub Copilot & Cursor AI**: Pair-programming aur developer speed ke liye.`;
+        }
+        return `Aditaya leverages these core AI tools daily:
+• 🧠 **Claude (Anthropic)**: Full-stack system architecture & deep algorithm design.
+• ⚡ **ChatGPT (OpenAI)**: Logic exploration, prompt engineering & API design.
+• 🌐 **Google Gemini**: Multimodal codebase automation & contextual analysis.
+• 🫀 **Scikit-Learn**: Clinical predictive ML for heart risk prediction.
+• 🎙️ **Web Speech AI**: Production voice engine powering me (Geet)!
+• 💻 **GitHub Copilot & Cursor AI**: High-velocity pair programming & navigation.`;
       }
 
       // 7. Resume
