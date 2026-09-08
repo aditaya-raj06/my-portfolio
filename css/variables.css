@@ -1,48 +1,46 @@
 /* ==========================================================================
    DESIGN TOKENS & VARIABLES
-   Bespoke, Human-Crafted Architecture Theme (Linear / Vercel Aesthetic)
-   Clean, mature, high-contrast typography, matte surfaces & restrained accents
+   Apple-Grade Signature Light Theme (apple.com Aesthetic)
    ========================================================================== */
 
 :root {
-  /* Color Palette - Deep Carbon Canvas & Refined Slate */
-  --bg-primary: #090a0f;
-  --bg-secondary: #0f1118;
-  --bg-tertiary: #161822;
-  --bg-elevated: #1e212f;
+  /* Apple Signature Color Palette - Pure Canvas & Soft Bento Surfaces */
+  --bg-primary: #fbfbfd;       /* Apple's pristine canvas background */
+  --bg-secondary: #f5f5f7;     /* Apple's signature section & card background */
+  --bg-tertiary: #ebebee;      /* Soft contrast elements */
+  --bg-surface: #ffffff;       /* Pure white elevated cards */
+  --bg-elevated: #ffffff;
   
-  /* Modern Matte & Hairline Surface Tokens */
-  --glass-bg: rgba(15, 17, 24, 0.72);
-  --glass-bg-hover: rgba(22, 25, 36, 0.88);
-  --glass-border: rgba(255, 255, 255, 0.08);
-  --glass-border-hover: rgba(255, 255, 255, 0.18);
-  --glass-blur: blur(14px);
-  --glass-specular: inset 0 1px 0 0 rgba(255, 255, 255, 0.07);
+  /* Apple Proprietary Frosted Glass Tokens */
+  --glass-bg: rgba(255, 255, 255, 0.8);
+  --glass-bg-hover: rgba(255, 255, 255, 0.95);
+  --glass-border: rgba(0, 0, 0, 0.08);
+  --glass-border-hover: rgba(0, 0, 0, 0.16);
+  --glass-blur: saturate(180%) blur(20px);
+  --glass-specular: inset 0 1px 0 0 rgba(255, 255, 255, 0.8);
 
-  /* Typography Colors - High Contrast, Legible, Crisp */
-  --text-primary: #f8fafc;
-  --text-secondary: #94a3b8;
-  --text-muted: #64748b;
-  --text-inverse: #090a0f;
+  /* Apple Typography Colors - Deep Ink Black & Refined Grays */
+  --text-primary: #1d1d1f;     /* Apple's deep ink black headline text */
+  --text-secondary: #6e6e73;   /* Apple's standard medium gray body text */
+  --text-muted: #86868b;       /* Apple's caption gray */
+  --text-inverse: #ffffff;
 
-  /* Restrained, Sophisticated Human Accents */
-  --accent-primary: #3b82f6;       /* Precision Royal Blue */
-  --accent-secondary: #60a5fa;     /* Soft Azure */
-  --accent-cyan: #38bdf8;          /* Tech Sky Blue */
-  --accent-emerald: #10b981;       /* Active Indicator */
-  --accent-amber: #f59e0b;         /* Highlights */
-  --accent-zinc: #e2e8f0;          /* Crisp Off-White */
+  /* Apple Signature Interactive Accents */
+  --accent-primary: #0071e3;   /* Apple's iconic interactive blue */
+  --accent-hover: #0077ed;     /* Apple button hover state */
+  --accent-cyan: #0284c7;      /* Tech Sky Blue */
+  --accent-emerald: #10b981;   /* Live presence emerald dot */
+  --accent-amber: #f59e0b;     /* Highlights */
 
-  /* Luxury Subtle Gradients - No loud rainbow neon */
-  --gradient-silver: linear-gradient(180deg, #ffffff 15%, #cbd5e1 65%, #94a3b8 100%);
-  --gradient-accent: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-  --gradient-glow: linear-gradient(180deg, rgba(59, 130, 246, 0.08) 0%, transparent 100%);
-  --gradient-card: linear-gradient(180deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.005) 100%);
+  /* Apple Luxury Subtle Gradients */
+  --gradient-headline: linear-gradient(180deg, #1d1d1f 20%, #434347 100%);
+  --gradient-apple-blue: linear-gradient(135deg, #0071e3 0%, #0077ed 100%);
+  --gradient-card: linear-gradient(180deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.6) 100%);
 
   /* Typography System */
-  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-heading: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', sans-serif;
+  --font-heading: 'Outfit', -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+  --font-mono: 'JetBrains Mono', 'SF Mono', Menlo, monospace;
 
   /* Font Sizes (Fluid Scale) */
   --text-xs: 0.75rem;
@@ -52,9 +50,9 @@
   --text-xl: 1.25rem;
   --text-2xl: 1.5rem;
   --text-3xl: 2rem;
-  --text-4xl: clamp(2.25rem, 4vw, 3rem);
-  --text-5xl: clamp(2.75rem, 6vw, 4.25rem);
-  --text-hero: clamp(3rem, 7.5vw, 5.25rem);
+  --text-4xl: clamp(2.25rem, 4.5vw, 3.25rem);
+  --text-5xl: clamp(2.75rem, 6.5vw, 4.5rem);
+  --text-hero: clamp(3.25rem, 7.8vw, 5.5rem);
 
   /* Spacing */
   --space-1: 0.25rem;
@@ -71,27 +69,27 @@
   --space-24: 6rem;
   --space-32: 8rem;
 
-  /* Border Radius */
-  --radius-sm: 6px;
-  --radius-md: 10px;
-  --radius-lg: 16px;
-  --radius-xl: 22px;
+  /* Border Radius (Apple-style large generous curves) */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-xl: 24px;
   --radius-full: 9999px;
 
-  /* Shadows - Natural & Depth-Driven (No artificial neon bloom) */
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 6px 18px -2px rgba(0, 0, 0, 0.5);
-  --shadow-lg: 0 14px 30px -4px rgba(0, 0, 0, 0.6);
-  --glow-emerald: 0 0 12px -2px rgba(16, 185, 129, 0.5);
+  /* Apple Shadows - Diffuse, Natural Ambient Elevation */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
+  --shadow-md: 0 4px 18px -2px rgba(0, 0, 0, 0.06), 0 2px 6px -1px rgba(0, 0, 0, 0.03);
+  --shadow-lg: 0 14px 34px -4px rgba(0, 0, 0, 0.08), 0 4px 12px -2px rgba(0, 0, 0, 0.04);
+  --glow-emerald: 0 0 12px rgba(16, 185, 129, 0.4);
 
-  /* Transitions & Animation Easing */
-  --ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  /* Transitions & Animation Easing (Apple standard smooth fluid physics) */
+  --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
-  --transition-fast: 0.15s ease;
-  --transition-base: 0.22s var(--ease-out);
-  --transition-smooth: 0.35s var(--ease-out);
+  --transition-fast: 0.16s var(--ease-out);
+  --transition-base: 0.26s var(--ease-out);
+  --transition-smooth: 0.4s var(--ease-out);
 
   /* Layout Container */
-  --container-max: 1200px;
-  --nav-height: 72px;
+  --container-max: 1180px;
+  --nav-height: 68px;
 }
