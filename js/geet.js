@@ -1,7 +1,8 @@
 /**
  * ==============================================================================
- * GEET - ADITAYA RAJ'S BILINGUAL VOICE AI ASSISTANT
- * Indian Female Voice Synthesis with Full Hinglish & English Conversational Engine
+ * GEET - SIRI / ALEXA-STYLE TALKING AI ASSISTANT FOR ADITAYA RAJ
+ * Hands-free Wake-Word Detection ("Hey Geet" / "Suno Geet" / "Geet")
+ * Voice Action Execution & Strict Portfolio Guardrails
  * ==============================================================================
  */
 
@@ -22,12 +23,16 @@
     const quickChips = document.querySelectorAll('.geet-quick-chip');
     const micBtn = document.getElementById('geet-mic-btn');
     const audioBtn = document.getElementById('geet-audio-btn');
+    const statusBadge = document.getElementById('geet-trigger-status');
+    const listeningIndicator = document.getElementById('geet-listening-indicator');
 
     if (!triggerBtn || !chatModal) return;
 
     let isAudioMuted = localStorage.getItem('geet_audio_muted') === 'true';
     let isListening = false;
     let recognition = null;
+    let wakeWordActive = true;
+    let audioCtx = null;
 
     // Initialize Audio Toggle state
     updateAudioBtnDisplay();
@@ -60,20 +65,57 @@
       }
     }
 
-    // Toggle Modal
-    triggerBtn.addEventListener('click', () => {
-      chatModal.classList.toggle('active');
-      if (chatModal.classList.contains('active')) {
-        chatInput?.focus();
-        scrollChatToBottom();
+    // Gentle Siri-style audio chime
+    function playSiriChime(type = 'wake') {
+      try {
+        if (!audioCtx) {
+          audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        if (audioCtx.state === 'suspended') {
+          audioCtx.resume();
+        }
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+
+        if (type === 'wake') {
+          // Double pleasant tone (like Siri / Alexa wake chime)
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(587.33, audioCtx.currentTime); // D5
+          osc.frequency.exponentialRampToValueAtTime(880.00, audioCtx.currentTime + 0.12); // A5
+          gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.28);
+          osc.start();
+          osc.stop(audioCtx.currentTime + 0.3);
+        }
+      } catch (e) {
+        // Silent fallback if audio context restricted
       }
+    }
+
+    // Toggle Modal Window
+    triggerBtn.addEventListener('click', () => {
+      openChat();
+      // On direct click, trigger voice listening if supported
+      startVoiceRecognition();
     });
 
     closeBtn?.addEventListener('click', () => {
+      closeChat();
+    });
+
+    function openChat() {
+      chatModal.classList.add('active');
+      chatInput?.focus();
+      scrollChatToBottom();
+    }
+
+    function closeChat() {
       chatModal.classList.remove('active');
       stopAllSpeech();
       stopVoiceRecognition();
-    });
+    }
 
     // Quick Prompt Chips
     quickChips.forEach(chip => {
@@ -93,38 +135,55 @@
     });
 
     // =========================================================================
-    // VOICE MODE: SPEECH-TO-TEXT (MICROPHONE INPUT)
+    // VOICE MODE: TALKING ASSISTANT & WAKE WORD ENGINE
     // =========================================================================
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 
     if (SpeechRecognition) {
       recognition = new SpeechRecognition();
-      recognition.continuous = false;
+      recognition.continuous = true;
       recognition.interimResults = false;
       recognition.lang = 'en-IN'; // Indian English / Hinglish
 
       recognition.onstart = () => {
         isListening = true;
         micBtn?.classList.add('listening');
-        if (chatInput) chatInput.placeholder = 'Listening... Speak in English or Hinglish';
+        triggerBtn.classList.add('listening');
+        if (statusBadge) statusBadge.textContent = 'Listening...';
+        if (listeningIndicator) listeningIndicator.textContent = 'Listening... Say "Hey Geet" or speak command';
+        if (chatInput) chatInput.placeholder = 'Listening... (e.g. "Projects dikhao", "Hey Geet")';
       };
 
       recognition.onresult = (event) => {
-        const transcript = event.results[0][0].transcript;
-        if (chatInput) chatInput.value = transcript;
-        stopVoiceRecognition();
-        if (transcript.trim()) {
-          sendMessage(transcript.trim());
-          if (chatInput) chatInput.value = '';
+        const lastIdx = event.results.length - 1;
+        const transcript = event.results[lastIdx][0].transcript.trim();
+        console.log('[Geet Voice]', transcript);
+
+        handleVoiceInput(transcript);
+      };
+
+      recognition.onerror = (err) => {
+        console.warn('[Geet Voice Error]', err.error);
+        if (err.error === 'not-allowed') {
+          wakeWordActive = false;
+          stopVoiceRecognition();
         }
       };
 
-      recognition.onerror = () => {
-        stopVoiceRecognition();
-      };
-
       recognition.onend = () => {
-        stopVoiceRecognition();
+        isListening = false;
+        micBtn?.classList.remove('listening');
+        triggerBtn.classList.remove('listening');
+        if (statusBadge) statusBadge.textContent = 'Talking AI';
+        if (listeningIndicator) listeningIndicator.textContent = 'Say "Hey Geet" or "Suno Geet" • Online';
+        if (chatInput) chatInput.placeholder = 'Ask Geet in English or Hinglish...';
+
+        // Auto-restart if wake-word mode is active and modal is open or active
+        if (wakeWordActive && chatModal.classList.contains('active')) {
+          try {
+            recognition.start();
+          } catch (e) {}
+        }
       };
     }
 
@@ -142,21 +201,137 @@
         stopVoiceRecognition();
       } else {
         stopAllSpeech();
-        try {
-          recognition.start();
-        } catch (err) {
-          stopVoiceRecognition();
-        }
+        startVoiceRecognition();
       }
     });
+
+    function startVoiceRecognition() {
+      if (!recognition || isListening) return;
+      stopAllSpeech();
+      try {
+        recognition.start();
+      } catch (err) {
+        // already started
+      }
+    }
 
     function stopVoiceRecognition() {
       isListening = false;
       micBtn?.classList.remove('listening');
-      if (chatInput) chatInput.placeholder = 'Ask Geet in English or Hinglish...';
+      triggerBtn.classList.remove('listening');
       try {
         recognition?.stop();
       } catch (e) {}
+    }
+
+    // =========================================================================
+    // VOICE INPUT PROCESSOR: WAKE-WORD & IN-PORTFOLIO ACTIONS
+    // =========================================================================
+    function handleVoiceInput(transcript) {
+      if (!transcript) return;
+      const lower = transcript.toLowerCase();
+
+      // Wake Word Pattern: "Hey Geet", "Suno Geet", "Geet", "Hello Geet", "Ok Geet"
+      const wakeWordRegex = /^(hey|suno|hello|ok|are)?\s*(geet|geeta|gita|git)\b/i;
+      const isWakeWord = wakeWordRegex.test(lower);
+
+      // Strip wake word to extract command
+      let command = lower.replace(wakeWordRegex, '').trim();
+
+      // If just the wake word was spoken (e.g. "Hey Geet", "Suno Geet", "Geet")
+      if (isWakeWord && (!command || command.length < 2)) {
+        openChat();
+        playSiriChime('wake');
+        const greeting = isHindiOrHinglish(lower)
+          ? `Haanji Aditaya, boliye? Main aapke portfolio me kya dikhaon?`
+          : `Yes, I am listening! What would you like to explore in Aditaya's portfolio?`;
+        appendMessage('user', transcript);
+        appendMessage('geet', greeting);
+        speakText(greeting);
+        return;
+      }
+
+      // If command was accompanied by wake word or direct speech, open chat and process
+      openChat();
+      if (isWakeWord) {
+        playSiriChime('wake');
+      }
+
+      const rawInput = command || transcript;
+      sendMessage(rawInput);
+    }
+
+    // =========================================================================
+    // IN-PORTFOLIO VOICE ACTIONS (Siri/Alexa-like Control)
+    // =========================================================================
+    function executePortfolioAction(q) {
+      // 1. Projects Navigation
+      if (q.includes('project') || q.includes('kaam') || q.includes('work')) {
+        if (q.includes('ml') || q.includes('ai') || q.includes('machine learning')) {
+          const mlBtn = document.querySelector('.filter-btn[data-category="ai-ml"]');
+          mlBtn?.click();
+        } else if (q.includes('all') || q.includes('saara')) {
+          const allBtn = document.querySelector('.filter-btn[data-category="all"]');
+          allBtn?.click();
+        }
+        const sec = document.getElementById('projects');
+        sec?.scrollIntoView({ behavior: 'smooth' });
+        return true;
+      }
+
+      // 2. Technical Skills Navigation
+      if (q.includes('skill') || q.includes('stack') || q.includes('technolog')) {
+        const sec = document.getElementById('skills');
+        sec?.scrollIntoView({ behavior: 'smooth' });
+        return true;
+      }
+
+      // 3. Education / Invertis University Navigation
+      if (q.includes('education') || q.includes('college') || q.includes('school') || q.includes('invertis') || q.includes('padhai')) {
+        const sec = document.getElementById('experience');
+        sec?.scrollIntoView({ behavior: 'smooth' });
+        return true;
+      }
+
+      // 4. Resume / CV Action
+      if (q.includes('open resume') || q.includes('resume open') || q.includes('download cv') || q.includes('resume download') || q.includes('view resume')) {
+        window.open('resume.html', '_blank');
+        return true;
+      }
+
+      // 5. Booking / Call Action
+      if (q.includes('book call') || q.includes('schedule') || q.includes('call book') || q.includes('meeting') || q.includes('15-min')) {
+        const bookingBackdrop = document.getElementById('booking-modal-backdrop');
+        if (bookingBackdrop) {
+          bookingBackdrop.classList.add('active');
+        } else {
+          document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+        }
+        return true;
+      }
+
+      // 6. Contact Section Navigation
+      if (q.includes('contact') || q.includes('reach') || q.includes('email') || q.includes('message')) {
+        document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+        return true;
+      }
+
+      // 7. Developer Terminal
+      if (q.includes('terminal') || q.includes('console') || q.includes('cli')) {
+        const sec = document.getElementById('terminal');
+        sec?.scrollIntoView({ behavior: 'smooth' });
+        document.getElementById('terminal-cli-input')?.focus();
+        return true;
+      }
+
+      // 8. Dark / Light Mode Toggle
+      if (q.includes('dark mode') || q.includes('light mode') || q.includes('theme')) {
+        const toggleBtn = document.getElementById('theme-toggle-btn');
+        toggleBtn?.click();
+        return true;
+      }
+
+      return false;
     }
 
     // =========================================================================
@@ -178,7 +353,7 @@
       const taggedFemale = voices.find(v => {
         const n = v.name.toLowerCase();
         const isIndian = v.lang === 'en-IN' || v.lang === 'hi-IN' || n.includes('india');
-        return isIndian && (n.includes('female') || !n.includes('male') && !n.includes('rishi') && !n.includes('aman'));
+        return isIndian && (n.includes('female') || (!n.includes('male') && !n.includes('rishi') && !n.includes('aman')));
       });
       if (taggedFemale) return taggedFemale;
 
@@ -202,7 +377,7 @@
       const clean = rawText
         .replace(/\[(.*?)\]\((.*?)\)/g, '$1')
         .replace(/\*\*(.*?)\*\*/g, '$1')
-        .replace(/👉|✨|🚀|💻|📄|📬|📧|💼|🐙|📸|🫀|📊|⚡|•/g, '')
+        .replace(/👉|✨|🚀|💻|📄|📬|📧|💼|🐙|📸|🫀|📊|⚡|•|🎓|🏫|🎒|📅/g, '')
         .replace(/\n+/g, '. ')
         .trim();
 
@@ -215,16 +390,14 @@
         utterance.voice = femaleVoice;
       }
 
-      // Detect if utterance has Hindi/Hinglish content for appropriate pronunciation
       if (isHindiOrHinglish(clean)) {
         utterance.lang = 'hi-IN';
       } else {
         utterance.lang = 'en-IN';
       }
 
-      // Warm, natural Indian female voice tuning
-      utterance.pitch = 1.08; // Friendly, warm female pitch
-      utterance.rate = 1.0;   // Natural conversational speed
+      utterance.pitch = 1.08; // Natural, friendly Indian female cadence
+      utterance.rate = 1.0;   // Conversational speed
 
       window.speechSynthesis.speak(utterance);
     }
@@ -245,7 +418,7 @@
         'aap', 'tum', 'namaste', 'shukriya', 'aur', 'kuch', 'bhi', 'kahan', 'kab',
         'kyu', 'kyun', 'nahi', 'haan', 'acha', 'theek', 'padhai', 'college', 'kitna',
         'chahiye', 'karna', 'karta', 'karti', 'hoga', 'hogi', 'kaam', 'baare', 'bataiye',
-        'unka', 'unke', 'unki', 'bata'
+        'unka', 'unke', 'unki', 'bata', 'dikhao', 'kholo', 'karo'
       ];
       const lower = (text || '').toLowerCase();
       return hindiKeywords.some(word => new RegExp(`\\b${word}\\b`, 'i').test(lower));
@@ -257,6 +430,9 @@
     async function sendMessage(userText) {
       stopAllSpeech();
       appendMessage('user', userText);
+
+      // Execute in-portfolio visual actions if matching
+      executePortfolioAction(userText.toLowerCase());
 
       const typingEl = showTypingIndicator();
 
@@ -277,7 +453,7 @@
           }
         }
 
-        // Attempt 2: Local bilingual NLP fallback if backend is unreachable
+        // Attempt 2: Local bilingual NLP fallback
         if (!reply) {
           reply = clientSideGeetAnswer(userText);
         }
@@ -339,44 +515,61 @@
 
     /**
      * Bilingual Client-side Knowledge Engine for Geet (Hinglish & English)
+     * With Strict Portfolio Boundary Guardrails & Invertis University Updates
      */
     function clientSideGeetAnswer(prompt) {
-      const q = prompt.toLowerCase();
+      const q = prompt.toLowerCase().trim();
       const inHindi = isHindiOrHinglish(prompt);
 
-      // Identity
-      if (q.includes('who are you') || q.includes('naam') || q.includes('who is geet') || q.includes('koun') || q.includes('intro')) {
+      // 1. Wake-word greeting
+      if (/^(hey|suno|hello|ok)?\s*(geet|geeta|gita|git)[!?,.\s]*$/i.test(q)) {
         if (inHindi) {
-          return `Namaste! Mera naam **Geet** hai. Main Aditaya Raj ki AI voice assistant hoon. Main aapke sath **Hinglish** aur **English** dono me baat kar sakti hoon! Aap Aditaya ke projects, skills, background aur contact details ke bare me kuch bhi pooch sakte hain.`;
+          return `Haanji Aditaya, boliye? Main aapke portfolio, projects, skills aur education ke baare me batane ke liye taiyaar hoon!`;
         }
-        return `Hello! My name is **Geet**, Aditaya Raj's AI voice assistant. I can converse fluently in both **English** and **Hinglish**. Feel free to ask me anything about Aditaya's projects, technical skills, background, or how to contact him!`;
+        return `Yes! I am listening. How can I assist you with exploring Aditaya's portfolio, projects, or background?`;
       }
 
-      // Projects
+      // 2. Identity
+      if (q.includes('who are you') || q.includes('naam') || q.includes('who is geet') || q.includes('koun') || q.includes('intro')) {
+        if (inHindi) {
+          return `Namaste! Mera naam **Geet** hai. Main Aditaya Raj ki Siri-style AI voice assistant hoon. Main sirf Aditaya ke portfolio, projects, skills, education aur contact details ke liye trained hoon. Aap mujhse Aditaya ke bare me kuch bhi pooch sakte hain!`;
+        }
+        return `Hello! My name is **Geet**, Aditaya Raj's Siri-style AI voice assistant. I am trained exclusively for his portfolio to guide you through his projects, skills, education, and achievements. Feel free to ask me anything about Aditaya!`;
+      }
+
+      // 3. About Aditaya
+      if (q.includes('who is aditaya') || q.includes('aditaya kaun hai') || q.includes('about aditaya') || q.includes('bio')) {
+        if (inHindi) {
+          return `**Aditaya Raj** ek Software Engineer aur Machine Learning developer hain, jo currently **B.Tech Computer Science & Engineering (Class of 2028 / CSE'28)** pursue kar rahe hain **Invertis University, Bareilly** se. Unka core focus clinical machine learning systems aur scalable full-stack web applications me hai!`;
+        }
+        return `**Aditaya Raj** is a Full-Stack Software Developer & Machine Learning Engineer pursuing his **B.Tech in Computer Science & Engineering (Class of 2028 / CSE'28)** at **Invertis University, Bareilly**, India. He specializes in clinical AI diagnostic models and modern web applications!`;
+      }
+
+      // 4. Projects
       if (q.includes('project') || q.includes('work') || q.includes('portfolio') || q.includes('code') || q.includes('repo') || q.includes('kaam')) {
         if (inHindi) {
           return `Aditaya ke top flagship projects:
-1. 🫀 **Heart Attack Risk Prediction System**: Clinical machine learning healthcare platform jo patient health parameters se cardiovascular risk calculate karta hai (Python, Scikit-Learn, Flask, SQLite).
+1. 🫀 **Heart Attack Risk Prediction System**: Clinical ML platform jo patient telemetry se cardiovascular risk evaluate karta hai (Python, Scikit-Learn, Flask).
 2. 📊 **ML-All**: Open-source machine learning algorithms library.
-3. ⚡ **Dynamic Portfolio & Live Sync Engine**: High-impact full-stack application backed by Node.js, live GitHub webhooks, aur meri voice!`;
+3. ⚡ **Dynamic Portfolio & Live Sync**: Full-stack web application with authentic GitHub sync aur talking voice assistant (Geet)!`;
         }
         return `Here are Aditaya's flagship projects:
-1. 🫀 **Heart Attack Risk Prediction System**: A clinical predictive ML platform estimating cardiovascular risk probabilities from patient telemetry (Python, Scikit-Learn, Flask, SQLite).
-2. 📊 **ML-All**: An open-source machine learning algorithm suite implementing regression, classification, and evaluation pipelines.
-3. ⚡ **Dynamic Portfolio & Real-Time Sync Engine**: Full-stack application backed by Node.js, live GitHub auto-sync, and my voice!`;
+1. 🫀 **Heart Attack Risk Prediction System**: Clinical predictive ML platform estimating cardiovascular risk from patient telemetry (Python, Scikit-Learn, Flask).
+2. 📊 **ML-All**: Open-source machine learning algorithm suite implementing regression, classification, and model evaluation.
+3. ⚡ **Dynamic Portfolio & Live Sync**: Full-stack application backed by authentic GitHub activity and Siri-style talking voice AI (me)!`;
       }
 
-      // Heart Attack Project
+      // 5. Heart Attack Project
       if (q.includes('heart') || q.includes('attack') || q.includes('health') || q.includes('medical') || q.includes('cardio')) {
         if (inHindi) {
-          return `Aditaya ka **Heart Attack Risk Prediction System** cardiovascular datasets par trained clinical ML model hai jo cholesterol, blood pressure aur heart rate evaluate karke real-time risk predict karta hai!
+          return `Aditaya ka **Heart Attack Risk Prediction System** cardiovascular parameters (cholesterol, blood pressure, resting ECG) ko evaluate karke clinical risk predict karta hai!
 👉 [View Repository on GitHub](https://github.com/aditaya-raj06/Heart_Attack_Prediction)`;
         }
-        return `Aditaya's **Heart Attack Risk Prediction System** is a clinical AI application evaluating cardiac telemetry (cholesterol, resting ECG, blood pressure) with high diagnostic accuracy.
+        return `Aditaya's **Heart Attack Risk Prediction System** is a clinical machine learning application evaluating patient cardiac telemetry with high diagnostic accuracy.
 👉 [View Repository on GitHub](https://github.com/aditaya-raj06/Heart_Attack_Prediction)`;
       }
 
-      // Skills
+      // 6. Skills
       if (q.includes('skill') || q.includes('tech') || q.includes('stack') || q.includes('language')) {
         if (inHindi) {
           return `Aditaya ka core technical stack:
@@ -392,21 +585,23 @@
 • **Databases & Cloud**: PostgreSQL, MySQL, MongoDB, SQLite, Supabase, Vercel, Render.`;
       }
 
-      // Resume
+      // 7. Resume
       if (q.includes('resume') || q.includes('cv') || q.includes('biodata')) {
         if (inHindi) {
-          return `Aap Aditaya ka official 1-page PDF resume yahan se download kar sakte hain:
-👉 [Download Aditaya's Resume](assets/Aditaya_Raj_Resume.pdf)`;
+          return `Aap Aditaya ka official 1-page ATS-compliant PDF resume yahan se download kar sakte hain:
+👉 [Download Aditaya's Resume](assets/Aditaya_Raj_Resume.pdf)
+Ya hero section me "View / Download CV" par click karein!`;
         }
-        return `You can download Aditaya's official 1-page ATS-friendly PDF resume right here:
-👉 [Download Aditaya's Resume](assets/Aditaya_Raj_Resume.pdf)`;
+        return `You can download Aditaya's official 1-page ATS-compliant PDF resume right here:
+👉 [Download Aditaya's Resume](assets/Aditaya_Raj_Resume.pdf)
+Or click the "View / Download CV" button in the hero section!`;
       }
 
-      // Contact
+      // 8. Contact / Hire / Meet
       if (q.includes('contact') || q.includes('hire') || q.includes('email') || q.includes('reach') || q.includes('chat') || q.includes('meeting')) {
         if (inHindi) {
           return `Aap Aditaya se direct connect kar sakte hain:
-📅 **15-Min Quick Chat**: Top par **"Book 15-Min Call"** button dabaiye!
+📅 **15-Min Quick Chat**: Hero section me **"Book 15-Min Call"** button dabaiye!
 📧 **Email**: [adityarajraja01@gmail.com](mailto:adityarajraja01@gmail.com)
 💼 **LinkedIn**: [linkedin.com/in/aditayaraj06](https://linkedin.com/in/aditayaraj06)
 🐙 **GitHub**: [github.com/aditaya-raj06](https://github.com/aditaya-raj06)`;
@@ -418,25 +613,41 @@
 🐙 **GitHub**: [github.com/aditaya-raj06](https://github.com/aditaya-raj06)`;
       }
 
-      // Education
-      if (q.includes('education') || q.includes('college') || q.includes('school') || q.includes('study') || q.includes('padhai') || q.includes('12th') || q.includes('10th')) {
+      // 9. Education (Invertis University + R.D.S College + K.C.M.F School)
+      if (q.includes('education') || q.includes('college') || q.includes('school') || q.includes('study') || q.includes('padhai') || q.includes('12th') || q.includes('10th') || q.includes('invertis')) {
         if (inHindi) {
           return `Aditaya ka complete educational background:
-1. 🎓 **B.Tech in Computer Science & Engineering** (2024 — 2028, CSE'28), Bareilly, UP.
+1. 🎓 **B.Tech in Computer Science & Engineering** (2024 — 2028, CSE'28) — **Invertis University, Bareilly**, Uttar Pradesh.
 2. 🏫 **Senior Secondary (Class XII)**: BSEB (2022 — 2024) — **R.D.S College**.
 3. 🎒 **Secondary (Class X)**: CBSE (2021 — 2022) — **K.C.M.F School**.`;
         }
         return `Aditaya's academic and educational background:
-1. 🎓 **B.Tech in Computer Science & Engineering** (2024 — 2028, Class of 2028), Bareilly, UP, India.
+1. 🎓 **B.Tech in Computer Science & Engineering** (2024 — 2028, Class of 2028) at **Invertis University, Bareilly**, Uttar Pradesh, India.
 2. 🏫 **Senior Secondary (Class XII)**: BSEB (2022 — 2024) from **R.D.S College**.
 3. 🎒 **Secondary (Class X)**: CBSE (2021 — 2022) from **K.C.M.F School**.`;
       }
 
-      // Default
-      if (inHindi) {
-        return `Main Aditaya Raj ki AI assistant Geet hoon! Main Hinglish aur English dono me baat kar sakti hoon. Aap mujhse unke **projects**, **skills** (Python, C, Java, ML), **education** (CSE'28), **resume**, ya **contact channels** ke baare me kuch bhi pooch sakte hain.`;
+      // 10. STRICT PORTFOLIO GUARDRAIL (Out-of-domain rejection)
+      const isOutOfDomain = 
+        q.includes('weather') || q.includes('mausam') || q.includes('temperature') ||
+        q.includes('prime minister') || q.includes('president') || q.includes('capital of') ||
+        q.includes('cricket') || q.includes('football') || q.includes('movie') || q.includes('film') ||
+        q.includes('song') || q.includes('gana') || q.includes('joke') || q.includes('chutkula') ||
+        q.includes('recipe') || q.includes('khana') || q.includes('solve this') || q.includes('calculate') ||
+        q.includes('bata sakti ho kya duniya') || q.includes('who is the king') || q.includes('politics');
+
+      if (isOutOfDomain) {
+        if (inHindi) {
+          return `Main sirf **Aditaya Raj** ke portfolio, unke projects, skills, education (Invertis University) aur contact details ke liye train ki gayi hoon. Main portfolio ke bahar ke sawaalon ka jawab nahi de sakti. Aap mujhse Aditaya ke baare me kuch bhi poochh sakte hain!`;
+        }
+        return `I am trained exclusively as **Aditaya Raj's portfolio assistant**. I can only assist with questions regarding his projects, technical skills, education at Invertis University, and hiring details. Please feel free to ask me anything about Aditaya!`;
       }
-      return `I am Geet, Aditaya Raj's AI voice assistant! I can speak fluently in both English and Hinglish. Feel free to ask me anything about his **projects**, **technical skills**, **education** (CSE'28), **resume**, or **contact options**!`;
+
+      // Default fallback
+      if (inHindi) {
+        return `Main Aditaya Raj ki AI voice assistant Geet hoon! Main sirf unke **projects**, **skills** (Python, C, Java, ML), **education** (Invertis University, CSE'28), **resume**, ya **contact channels** ke baare me guide karne ke liye train hoon. Aap mujhse Aditaya ke baare me kya janna chahte hain?`;
+      }
+      return `I am Geet, Aditaya Raj's AI voice assistant! I am trained exclusively for his portfolio to answer questions about his **projects**, **technical skills**, **education** at Invertis University, and **resume**. How can I help you explore Aditaya's portfolio?`;
     }
   }
 })();

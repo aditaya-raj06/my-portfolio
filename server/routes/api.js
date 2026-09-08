@@ -178,4 +178,23 @@ router.post('/sync/profile', (req, res) => {
   });
 });
 
+// ----------------------------------------------------------------------------
+// 6. GET /api/github/contributions - Returns authentic GitHub contribution calendar
+// ----------------------------------------------------------------------------
+router.get('/github/contributions', (req, res) => {
+  const contribFile = path.join(__dirname, '../data/github-contributions.json');
+  const data = readJson(contribFile, null);
+  if (data) {
+    res.json({
+      success: true,
+      data
+    });
+  } else {
+    res.status(404).json({
+      success: false,
+      error: 'Contribution data not available'
+    });
+  }
+});
+
 export default router;

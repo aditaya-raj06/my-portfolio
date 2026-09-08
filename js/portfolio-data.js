@@ -157,13 +157,13 @@ const portfolioData = {
   experience: [
     {
       role: "B.Tech in Computer Science & Engineering",
-      company: "CSE Undergraduate Scholar (Class of 2028)",
+      company: "Invertis University, Bareilly",
       period: "2024 — 2028",
       location: "Bareilly, UP, India",
       bullets: [
+        "Pursuing Bachelor of Technology in CSE (Class of 2028) at Invertis University, Bareilly.",
         "Studying Core Computer Science fundamentals: Data Structures & Algorithms, Object-Oriented Programming, and Database Management Systems.",
-        "Developing real-world applied Machine Learning models including clinical healthcare risk prediction platforms.",
-        "Actively collaborating on open-source repositories and participating in technical developer communities."
+        "Developing applied Machine Learning models including clinical healthcare risk prediction platforms."
       ]
     },
     {

@@ -155,25 +155,48 @@ Or click the "View / Download CV" button in the hero section above!`;
 🐙 **GitHub**: [github.com/aditaya-raj06](https://github.com/aditaya-raj06)`;
   }
 
+  // Wake Word standalone greeting ("Hey Geet", "Suno Geet", "Geet")
+  if (/^(hey|suno|hello|ok)?\s*(geet|geeta|gita|git)[!?,.\s]*$/i.test(q)) {
+    if (inHindi) {
+      return `Haanji Aditaya, boliye? Main aapke portfolio, projects, skills aur education ke baare me batane ke liye taiyaar hoon!`;
+    }
+    return `Yes! I am listening. How can I assist you with exploring Aditaya's portfolio, projects, or background?`;
+  }
+
   // Education
-  if (q.includes('education') || q.includes('college') || q.includes('school') || q.includes('degree') || q.includes('padhai') || q.includes('study') || q.includes('12th') || q.includes('10th')) {
+  if (q.includes('education') || q.includes('college') || q.includes('school') || q.includes('degree') || q.includes('padhai') || q.includes('study') || q.includes('12th') || q.includes('10th') || q.includes('invertis')) {
     if (inHindi) {
       return `Aditaya ka complete educational background:
-1. 🎓 **B.Tech in Computer Science & Engineering** (2024 — 2028, CSE'28), Bareilly, UP.
+1. 🎓 **B.Tech in Computer Science & Engineering** (2024 — 2028, CSE'28) — **Invertis University, Bareilly**, Uttar Pradesh.
 2. 🏫 **Senior Secondary (Class XII)**: BSEB (2022 — 2024) — **R.D.S College**.
 3. 🎒 **Secondary (Class X)**: CBSE (2021 — 2022) — **K.C.M.F School**.`;
     }
     return `Aditaya's academic and educational background:
-1. 🎓 **B.Tech in Computer Science & Engineering** (2024 — 2028, Class of 2028), Bareilly, UP, India.
+1. 🎓 **B.Tech in Computer Science & Engineering** (2024 — 2028, Class of 2028) at **Invertis University, Bareilly**, Uttar Pradesh, India.
 2. 🏫 **Senior Secondary (Class XII)**: BSEB (2022 — 2024) from **R.D.S College**.
 3. 🎒 **Secondary (Class X)**: CBSE (2021 — 2022) from **K.C.M.F School**.`;
   }
 
+  // Out-of-Domain Guardrail (Non-portfolio questions)
+  const isOutOfDomain = 
+    q.includes('weather') || q.includes('mausam') || q.includes('temperature') ||
+    q.includes('prime minister') || q.includes('president') || q.includes('capital of') ||
+    q.includes('cricket') || q.includes('football') || q.includes('movie') || q.includes('film') ||
+    q.includes('song') || q.includes('gana') || q.includes('joke') || q.includes('chutkula') ||
+    q.includes('recipe') || q.includes('khana') || q.includes('solve this') || q.includes('calculate');
+
+  if (isOutOfDomain) {
+    if (inHindi) {
+      return `Main sirf **Aditaya Raj** ke portfolio, unke projects, skills, education (Invertis University) aur contact details ke liye train ki gayi hoon. Aap mujhse Aditaya ke baare me kuch bhi poochh sakte hain!`;
+    }
+    return `I am trained exclusively as **Aditaya Raj's portfolio assistant**. I can only answer questions related to his software projects, technical skills, education at Invertis University, and hiring details. Please feel free to ask me anything about Aditaya!`;
+  }
+
   // Default fallback
   if (inHindi) {
-    return `Main Aditaya Raj ki AI assistant Geet hoon! Aap mujhse unke **projects**, **skills** (Python, C, Java, ML), **education** (CSE'28), **resume**, ya **contact channels** ke baare me kuch bhi pooch sakte hain.`;
+    return `Main Aditaya Raj ki AI assistant Geet hoon! Main sirf unke **projects**, **skills** (Python, C, Java, ML), **education** (Invertis University, CSE'28), **resume**, ya **contact channels** ke baare me guide karne ke liye train hoon. Aap mujhse Aditaya ke baare me kya janna chahte hain?`;
   }
-  return `I am Geet, Aditaya Raj's AI voice assistant! I can help you learn all about his **projects**, **technical skills**, **education** (CSE'28), **resume download**, or **contact options**. What would you like to explore?`;
+  return `I am Geet, Aditaya Raj's AI voice assistant! I am trained exclusively for his portfolio to answer questions about his **projects**, **technical skills**, **education** at Invertis University, and **resume**. How can I help you learn about Aditaya?`;
 }
 
 /**

@@ -194,12 +194,12 @@
               </div>
               <div class="github-activity-meta">
                 <div class="github-stat-pill">
-                  <span>Yearly Commits:</span>
-                  <strong id="heatmap-total-commits">468+</strong>
+                  <span>Yearly Contributions:</span>
+                  <strong id="heatmap-total-commits">23 Contributions</strong>
                 </div>
                 <div class="github-stat-pill">
-                  <span>Active Streak:</span>
-                  <strong id="heatmap-active-streak">18 Days</strong>
+                  <span>Public Repos:</span>
+                  <strong id="heatmap-active-streak">4 Public Repos</strong>
                 </div>
                 <a href="https://github.com/aditaya-raj06" target="_blank" rel="noopener noreferrer" class="badge-sync" style="text-decoration: none;">
                   <span class="radar-dot"></span>
@@ -211,13 +211,13 @@
             <!-- Heatmap Matrix Scroll Area -->
             <div class="heatmap-scroll-container">
               <div id="github-heatmap-container">
-                <!-- Dynamically generated 52-week activity cells by github-activity.js -->
+                <!-- Dynamically populated from authentic GitHub contributions data -->
               </div>
             </div>
 
             <!-- Legend & Activity Footnote -->
             <div class="heatmap-legend-row">
-              <span>52 Weeks of Consistent Engineering &amp; Problem Solving</span>
+              <span>Authentic GitHub Contributions &amp; Engineering Activity</span>
               <div class="heatmap-legend">
                 <span>Less</span>
                 <span class="heatmap-cell" data-level="0" style="width:10px; height:10px;"></span>
@@ -441,10 +441,10 @@
        GEET - PORTFOLIO AI VOICE ASSISTANT WIDGET
        ==================================================================== -->
   <!-- Floating Trigger Button -->
-  <div class="geet-trigger" id="geet-trigger-btn" role="button" aria-label="Open Geet AI Voice Assistant">
+  <div class="geet-trigger" id="geet-trigger-btn" role="button" aria-label="Open Geet AI Voice Assistant" title="Click to open or say 'Hey Geet'">
     <span class="geet-sparkle-icon">✨</span>
-    <span class="geet-trigger-text">Ask Geet</span>
-    <span class="geet-trigger-badge">Voice AI</span>
+    <span class="geet-trigger-text">Hey Geet</span>
+    <span class="geet-trigger-badge" id="geet-trigger-status">Talking AI</span>
   </div>
 
   <!-- Frosted Glass Chat Modal Window -->
@@ -454,8 +454,8 @@
       <div class="geet-header-left">
         <div class="geet-avatar-badge" style="background: linear-gradient(135deg, #0071e3 0%, #a855f7 100%);">✨</div>
         <div>
-          <div class="geet-title">Geet</div>
-          <div class="geet-subtitle">Aditaya's AI Voice Assistant • Online</div>
+          <div class="geet-title">Geet <span style="font-size: 0.65rem; padding: 2px 6px; background: rgba(0, 113, 227, 0.12); color: #0071e3; border-radius: 99px; font-weight: 600; margin-left: 4px;">Siri Mode</span></div>
+          <div class="geet-subtitle" id="geet-listening-indicator">Say "Hey Geet" or "Suno Geet" • Online</div>
         </div>
       </div>
       <div class="geet-header-actions">
@@ -566,11 +566,12 @@
   </div>
 
   <!-- Portfolio Data, Live Sync, Activity, Booking, Geet AI & App Scripts -->
-  <script src="js/portfolio-data.js?v=7"></script>
-  <script src="js/live-sync.js?v=7"></script>
-  <script src="js/github-activity.js?v=7"></script>
-  <script src="js/booking.js?v=7"></script>
-  <script src="js/geet.js?v=7"></script>
-  <script src="js/main.js?v=7"></script>
+  <script src="js/portfolio-data.js?v=8"></script>
+  <script src="js/live-sync.js?v=8"></script>
+  <script src="js/github-contributions-data.js?v=8"></script>
+  <script src="js/github-activity.js?v=8"></script>
+  <script src="js/booking.js?v=8"></script>
+  <script src="js/geet.js?v=8"></script>
+  <script src="js/main.js?v=8"></script>
 </body>
 </html>
