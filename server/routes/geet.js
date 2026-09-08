@@ -48,71 +48,130 @@ const ADITAYA_PROFILE = {
 };
 
 /**
- * Intelligent Rule-based NLP Responder for Geet
+ * Detect whether query is in Hindi / Hinglish or English
  */
-function getGeetAnswer(userPrompt) {
-  const q = (userPrompt || '').toLowerCase().trim();
-
-  if (q.includes('who are you') || q.includes('naam kya hai') || q.includes('who is geet') || q.includes('tera naam')) {
-    return `Namaste! Mera naam **Geet** hai. Main Aditaya Raj ki personal AI assistant hoon. Main aapko Aditaya ke projects, skills, education, experience aur contact details ke bare me sab kuch bata sakti hoon. Aap mujhse unke kisi bhi kaam ke bare me pooch sakte hain!`;
-  }
-
-  if (q.includes('who is aditaya') || q.includes('aditaya kaun hai') || q.includes('about') || q.includes('introduce') || q.includes('bio')) {
-    return `**Aditaya Raj** ek energetic Full-Stack Developer aur Machine Learning Engineer hain. Wo currently **B.Tech Computer Science & Engineering (Class of 2028 / CSE'28)** pursue kar rahe hain Bareilly, UP se. 
-Unka primary focus clinical machine learning systems (jaise cardiovascular risk prediction) aur high-performance scalable web applications build karne me hai. Wo Python, C, Java, aur JavaScript me highly proficient hain!`;
-  }
-
-  if (q.includes('project') || q.includes('work') || q.includes('kaam') || q.includes('shipped') || q.includes('portfolio')) {
-    return `Aditaya ne kai real-world projects build kiye hain. Inme se 3 flagship projects ye hain:
-1. 🫀 **Heart Attack Risk Prediction System**: Clinical ML model jo patient health metrics se cardiovascular risk predict karta hai (Python, Scikit-Learn, Flask, SQLite).
-2. 📊 **ML-All**: Open-source machine learning suite jisme regression, classification aur model evaluation pipelines benchmarked hain.
-3. ⚡ **Modern Portfolio & Real-Time Sync Engine**: Apple-grade UI backed by Node.js with live GitHub auto-sync webhooks and me (Geet)!
-
-Aap upar "Projects" section me live preview aur GitHub source code bhi dekh sakte hain.`;
-  }
-
-  if (q.includes('heart') || q.includes('attack') || q.includes('health') || q.includes('medical')) {
-    return `Aditaya ka **Heart Attack Risk Prediction System** ek clinical diagnostic tool hai. Isme patient ke cardiovascular parameters (cholesterol, blood pressure, heart rate, age, etc.) ko Scikit-Learn model me process karke real-time risk assessment provide kiya jata hai. Iska web frontend Flask aur SQLite ke sath bana hai! 
-GitHub link: [Heart_Attack_Prediction](https://github.com/aditaya-raj06/Heart_Attack_Prediction)`;
-  }
-
-  if (q.includes('skill') || q.includes('tech stack') || q.includes('language') || q.includes('technologies')) {
-    return `Aditaya ka technical stack kaafi comprehensive hai:
-• **Languages**: Python, C, Java, JavaScript (ES6+), SQL, HTML5, CSS3/SASS.
-• **Frameworks & Web**: Node.js, Express.js, Flask, RESTful APIs.
-• **Databases & Cloud**: PostgreSQL, MySQL, MongoDB, SQLite, Supabase, Vercel, Render.
-• **AI & Data Science**: Scikit-Learn, NumPy, Pandas, Matplotlib, Predictive Analytics.
-• **Tools**: Git, GitHub, VS Code, Figma, Canva.`;
-  }
-
-  if (q.includes('education') || q.includes('college') || q.includes('degree') || q.includes('padhai') || q.includes('study')) {
-    return `Aditaya **Bachelor of Technology (B.Tech) in Computer Science & Engineering (Class of 2028)** ke scholar hain. Unka academic focus Data Structures & Algorithms, Object-Oriented Programming, aur Database Systems par hai.`;
-  }
-
-  if (q.includes('resume') || q.includes('cv') || q.includes('biodata')) {
-    return `Aap Aditaya ka official 1-Page ATS-friendly PDF Resume direct download kar sakte hain:
-👉 [Download Aditaya's Resume](assets/Aditaya_Raj_Resume.pdf)
-Ya fir hero section me **"View / Download CV"** button par click karein!`;
-  }
-
-  if (q.includes('contact') || q.includes('hire') || q.includes('email') || q.includes('reach') || q.includes('phone') || q.includes('social')) {
-    return `Aap Aditaya se in channels ke through directly connect kar sakte hain:
-📧 **Email**: [adityarajraja01@gmail.com](mailto:adityarajraja01@gmail.com)
-🐙 **GitHub**: [github.com/aditaya-raj06](https://github.com/aditaya-raj06)
-💼 **LinkedIn**: [linkedin.com/in/aditayaraj06](https://linkedin.com/in/aditayaraj06)
-📸 **Instagram**: [instagram.com/aditaya_.raj](https://instagram.com/aditaya_.raj/)
-🐦 **Twitter/X**: [x.com/Aditaya0612](https://x.com/Aditaya0612)
-
-Aap page ke neeche contact form bhi fill kar sakte hain, Aditaya ko direct notification mil jayega!`;
-  }
-
-  // Default intelligent fallback
-  return `Aditaya Raj ke baare me poochne ke liye shukriya! Main unke **projects** (jaise Heart Attack ML Predictor), **skills** (Python, C, Java, Full-Stack), **education** (CSE'28), **resume download**, ya **contact details** ke bare me sab kuch bata sakti hoon. 
-Aap kya janna chahte hain?`;
+function isHindiOrHinglish(text) {
+  if (/[\u0900-\u097F]/.test(text)) return true;
+  const hindiKeywords = [
+    'kya', 'hai', 'hain', 'kaise', 'kaun', 'koun', 'batao', 'mera', 'meri', 'mere',
+    'aap', 'tum', 'namaste', 'shukriya', 'aur', 'kuch', 'bhi', 'kahan', 'kab',
+    'kyu', 'kyun', 'nahi', 'haan', 'acha', 'theek', 'padhai', 'college', 'kitna',
+    'chahiye', 'karna', 'karta', 'karti', 'hoga', 'hogi', 'kaam', 'baare', 'bataiye'
+  ];
+  const lower = (text || '').toLowerCase();
+  return hindiKeywords.some(word => new RegExp(`\\b${word}\\b`, 'i').test(lower));
 }
 
 /**
- * POST /api/geet - Chat endpoint
+ * Intelligent Bilingual Rule-based NLP Responder for Geet (Hinglish & English)
+ */
+function getGeetAnswer(userPrompt) {
+  const q = (userPrompt || '').toLowerCase().trim();
+  const inHindi = isHindiOrHinglish(userPrompt);
+
+  // Identity / Intro
+  if (q.includes('who are you') || q.includes('naam kya hai') || q.includes('who is geet') || q.includes('tera naam') || q.includes('aap kaun ho')) {
+    if (inHindi) {
+      return `Namaste! Mera naam **Geet** hai. Main Aditaya Raj ki AI voice assistant hoon. Main aapke sath **Hinglish** aur **English** dono me baat kar sakti hoon! Aap Aditaya ke projects, skills, background aur contact ke bare me kuch bhi pooch sakte hain.`;
+    }
+    return `Hello! My name is **Geet**, Aditaya Raj's AI voice assistant. I can converse fluently in both **English** and **Hinglish**. Feel free to ask me anything about Aditaya's projects, technical skills, background, or hiring details!`;
+  }
+
+  // About Aditaya
+  if (q.includes('who is aditaya') || q.includes('aditaya kaun hai') || q.includes('about aditaya') || q.includes('bio') || q.includes('introduce')) {
+    if (inHindi) {
+      return `**Aditaya Raj** ek dedicated Software Engineer aur Machine Learning developer hain, jo currently **B.Tech Computer Science & Engineering (Class of 2028 / CSE'28)** pursue kar rahe hain Bareilly, UP se. 
+Unka primary focus clinical machine learning systems (jaise Heart Attack risk prediction) aur high-performance web applications build karne me hai. Wo Python, C, Java, aur modern JavaScript me expert hain!`;
+    }
+    return `**Aditaya Raj** is a passionate Full-Stack Software Developer & Applied Machine Learning Engineer pursuing his **B.Tech in Computer Science & Engineering (Class of 2028 / CSE'28)** from Bareilly, UP, India.
+He specializes in clinical AI systems—notably his Heart Attack Risk Prediction platform—as well as robust, high-performance web backends using Python, JavaScript, Java, and C.`;
+  }
+
+  // Projects
+  if (q.includes('project') || q.includes('work') || q.includes('kaam') || q.includes('portfolio') || q.includes('code') || q.includes('repo')) {
+    if (inHindi) {
+      return `Aditaya ke top flagship projects:
+1. 🫀 **Heart Attack Risk Prediction System**: Clinical ML model jo patient metrics se cardiovascular risk evaluate karta hai (Python, Scikit-Learn, Flask, SQLite).
+2. 📊 **ML-All**: Open-source machine learning algorithm suite jisme regression, classification aur evaluation models benchmarked hain.
+3. ⚡ **Dynamic Portfolio & Live Sync Engine**: Ye portfolio website jisme live GitHub webhooks aur mera voice system integrated hai!`;
+    }
+    return `Here are Aditaya's flagship software & AI projects:
+1. 🫀 **Heart Attack Risk Prediction System**: A clinical predictive ML platform estimating cardiovascular risk probabilities from patient telemetry (Python, Scikit-Learn, Flask, SQLite).
+2. 📊 **ML-All**: An open-source machine learning algorithm repository implementing regression, classification, and statistical benchmarking.
+3. ⚡ **Dynamic Portfolio & Real-Time Sync Engine**: Full-stack application backed by Node.js, live GitHub webhooks, and me (Geet)!`;
+  }
+
+  // Heart Attack Project
+  if (q.includes('heart') || q.includes('attack') || q.includes('health') || q.includes('medical') || q.includes('cardio')) {
+    if (inHindi) {
+      return `Aditaya ka **Heart Attack Risk Prediction System** ek clinical ML model hai jo patient ke cholesterol, blood pressure, heart rate jaise parameters analyze karke risk assess karta hai with 87%+ accuracy!
+👉 [View on GitHub](https://github.com/aditaya-raj06/Heart_Attack_Prediction)`;
+    }
+    return `Aditaya's **Heart Attack Risk Prediction System** is a clinical AI application evaluating patient cardiac metrics (blood pressure, cholesterol, resting ECG) with high diagnostic accuracy.
+👉 [View Repository on GitHub](https://github.com/aditaya-raj06/Heart_Attack_Prediction)`;
+  }
+
+  // Skills
+  if (q.includes('skill') || q.includes('tech stack') || q.includes('language') || q.includes('technologies')) {
+    if (inHindi) {
+      return `Aditaya ka technical stack:
+• **Languages**: Python, C, Java, JavaScript (ES6+), SQL, HTML5, CSS3.
+• **Web & Backend**: Node.js, Express.js, Flask, RESTful APIs.
+• **AI & ML**: Scikit-Learn, NumPy, Pandas, Matplotlib, Predictive Analytics.
+• **Databases & Cloud**: PostgreSQL, MySQL, MongoDB, SQLite, Supabase, Vercel, Render.`;
+    }
+    return `Aditaya's core technical stack includes:
+• **Languages**: Python, C, Java, JavaScript (ES6+), SQL, HTML5, CSS3.
+• **Backend & Web**: Node.js, Express.js, Flask, RESTful APIs.
+• **Machine Learning**: Scikit-Learn, NumPy, Pandas, Matplotlib, Predictive Modeling.
+• **Databases & Cloud**: PostgreSQL, MySQL, MongoDB, SQLite, Supabase, Vercel, Render.`;
+  }
+
+  // Resume / CV
+  if (q.includes('resume') || q.includes('cv') || q.includes('biodata')) {
+    if (inHindi) {
+      return `Aap Aditaya ka official 1-page PDF resume direct yahan se download kar sakte hain:
+👉 [Download Aditaya's Resume](assets/Aditaya_Raj_Resume.pdf)
+Ya hero section me "View / Download CV" button dabayein!`;
+    }
+    return `You can download Aditaya's official 1-page ATS-friendly PDF resume right here:
+👉 [Download Aditaya's Resume](assets/Aditaya_Raj_Resume.pdf)
+Or click the "View / Download CV" button in the hero section above!`;
+  }
+
+  // Contact / Hire / Meet
+  if (q.includes('contact') || q.includes('hire') || q.includes('email') || q.includes('reach') || q.includes('meeting') || q.includes('chat')) {
+    if (inHindi) {
+      return `Aap Aditaya se direct connect kar sakte hain:
+📅 **15-Min Quick Call**: Top par **"Book 15-Min Call"** button dabaiye!
+📧 **Email**: [adityarajraja01@gmail.com](mailto:adityarajraja01@gmail.com)
+💼 **LinkedIn**: [linkedin.com/in/aditayaraj06](https://linkedin.com/in/aditayaraj06)
+🐙 **GitHub**: [github.com/aditaya-raj06](https://github.com/aditaya-raj06)`;
+    }
+    return `You can get in touch with Aditaya through any of the following channels:
+📅 **15-Min Quick Catchup**: Click the **"Book 15-Min Call"** button in the hero section!
+📧 **Email**: [adityarajraja01@gmail.com](mailto:adityarajraja01@gmail.com)
+💼 **LinkedIn**: [linkedin.com/in/aditayaraj06](https://linkedin.com/in/aditayaraj06)
+🐙 **GitHub**: [github.com/aditaya-raj06](https://github.com/aditaya-raj06)`;
+  }
+
+  // Education
+  if (q.includes('education') || q.includes('college') || q.includes('degree') || q.includes('padhai') || q.includes('study')) {
+    if (inHindi) {
+      return `Aditaya currently **B.Tech Computer Science & Engineering (Class of 2028 / CSE'28)** pursue kar rahe hain Bareilly, Uttar Pradesh se.`;
+    }
+    return `Aditaya is currently pursuing his **Bachelor of Technology (B.Tech) in Computer Science & Engineering (Class of 2028 / CSE'28)** based in Bareilly, Uttar Pradesh, India.`;
+  }
+
+  // Default fallback
+  if (inHindi) {
+    return `Main Aditaya Raj ki AI assistant Geet hoon! Aap mujhse unke **projects**, **skills** (Python, C, Java, ML), **education** (CSE'28), **resume**, ya **contact channels** ke baare me kuch bhi pooch sakte hain.`;
+  }
+  return `I am Geet, Aditaya Raj's AI voice assistant! I can help you learn all about his **projects**, **technical skills**, **education** (CSE'28), **resume download**, or **contact options**. What would you like to explore?`;
+}
+
+/**
+ * POST /api/geet - Bilingual Chat endpoint
  */
 router.post('/', async (req, res) => {
   const { message } = req.body;
