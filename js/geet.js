@@ -437,7 +437,7 @@
       if (q.includes('who are you') || q.includes('naam') || q.includes('who is aditaya') || q.includes('koun') || q.includes('intro')) {
         return {
           text: `Hey! Main **Aditaya Raj** hoon. Ye mera interactive AI digital twin aur voice clone hai. Aap mujhse mere **machine learning projects**, **technical skills**, meri coding journey ya collaboration ke bare me direct pooch sakte ho!`,
-          voiceNote: { src: 'assets/audio/welcome.m4a', title: 'Aditaya\'s Introduction', duration: '0:14' }
+          voiceNote: { src: 'assets/audio/welcome.m4a', title: 'Aditaya\'s Real Voice', duration: '0:16' }
         };
       }
 
