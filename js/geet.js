@@ -419,11 +419,17 @@
       }
 
       // Education
-      if (q.includes('education') || q.includes('college') || q.includes('study') || q.includes('padhai')) {
+      if (q.includes('education') || q.includes('college') || q.includes('school') || q.includes('study') || q.includes('padhai') || q.includes('12th') || q.includes('10th')) {
         if (inHindi) {
-          return `Aditaya currently **B.Tech Computer Science & Engineering (Class of 2028 / CSE'28)** pursue kar rahe hain Bareilly, Uttar Pradesh se.`;
+          return `Aditaya ka complete educational background:
+1. 🎓 **B.Tech in Computer Science & Engineering** (2024 — 2028, CSE'28), Bareilly, UP.
+2. 🏫 **Senior Secondary (Class XII)**: BSEB (2022 — 2024) — **R.D.S College**.
+3. 🎒 **Secondary (Class X)**: CBSE (2021 — 2022) — **K.C.M.F School**.`;
         }
-        return `Aditaya is currently pursuing his **Bachelor of Technology (B.Tech) in Computer Science & Engineering (Class of 2028 / CSE'28)** based in Bareilly, Uttar Pradesh, India.`;
+        return `Aditaya's academic and educational background:
+1. 🎓 **B.Tech in Computer Science & Engineering** (2024 — 2028, Class of 2028), Bareilly, UP, India.
+2. 🏫 **Senior Secondary (Class XII)**: BSEB (2022 — 2024) from **R.D.S College**.
+3. 🎒 **Secondary (Class X)**: CBSE (2021 — 2022) from **K.C.M.F School**.`;
       }
 
       // Default

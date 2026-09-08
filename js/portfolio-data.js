@@ -167,6 +167,26 @@ const portfolioData = {
       ]
     },
     {
+      role: "Senior Secondary (Class XII)",
+      company: "R.D.S College | BSEB",
+      period: "2022 — 2024",
+      location: "Bihar, India",
+      bullets: [
+        "Completed Senior Secondary education under Bihar School Examination Board (BSEB) with strong focus on Science & Mathematics.",
+        "Built core analytical problem solving, logical reasoning, and pre-engineering fundamentals."
+      ]
+    },
+    {
+      role: "Secondary (Class X)",
+      company: "K.C.M.F School | CBSE",
+      period: "2021 — 2022",
+      location: "India",
+      bullets: [
+        "Completed Secondary School Examination under Central Board of Secondary Education (CBSE).",
+        "Recognized for strong academic performance in science, mathematics, and computer foundations."
+      ]
+    },
+    {
       role: "Full-Stack & Machine Learning Developer",
       company: "Independent Projects & Open Source",
       period: "2024 — Present",
