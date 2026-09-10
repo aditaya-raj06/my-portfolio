@@ -331,9 +331,9 @@
         return true;
       }
 
-      // 9. 60-Second Guided Tour Action
-      if (q.includes('tour') || q.includes('guide') || q.includes('audio tour')) {
-        window.PortfolioAudioTour?.startTour();
+      // 9. Portfolio Guide / Highlights
+      if (q.includes('tour') || q.includes('guide') || q.includes('audio tour') || q.includes('highlights')) {
+        speakResponse("Main Aditaya Raj ke portfolio ki digital assistant hoon. Aap mujhse unke flagship machine learning projects, core skills, Invertis University B.Tech education ya contact details ke baare me poochh sakte hain!", 'hi-IN');
         return true;
       }
 
@@ -405,23 +405,9 @@
       utterance.pitch = 1.08; // Natural, friendly Indian female cadence
       utterance.rate = 1.0;   // Conversational speed
 
-      utterance.onstart = () => {
-        if (window.DynamicIsland && !window.PortfolioAudioTour?.isTourRunning()) {
-          window.DynamicIsland.setSpeaking(true, 'Geet Speaking...');
-        }
-      };
-
-      utterance.onend = () => {
-        if (window.DynamicIsland && !window.PortfolioAudioTour?.isTourRunning()) {
-          window.DynamicIsland.setSpeaking(false);
-        }
-      };
-
-      utterance.onerror = () => {
-        if (window.DynamicIsland && !window.PortfolioAudioTour?.isTourRunning()) {
-          window.DynamicIsland.setSpeaking(false);
-        }
-      };
+      utterance.onstart = () => {};
+      utterance.onend = () => {};
+      utterance.onerror = () => {};
 
       window.speechSynthesis.speak(utterance);
     }
